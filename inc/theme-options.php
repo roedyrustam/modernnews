@@ -332,7 +332,7 @@ function modernnews_theme_options_page_html()
         <?php settings_errors(); ?>
         <div class="modernnews-admin-header">
             <h1><?php echo esc_html__('Modern News Settings', 'modernnews'); ?></h1>
-            <span class="version">v1.2.0</span>
+            <span class="version">v1.3.0</span>
         </div>
 
         <div class="modernnews-admin-main">
