@@ -1,0 +1,50 @@
+/* Block Styles */
+
+/* Highlight Box */
+.is-style-highlight-box {
+    background-color: #f9fafb;
+    /* gray-50 */
+    border: 1px solid #e5e7eb;
+    /* gray-200 */
+    padding: 2rem;
+    border-radius: 0.75rem;
+    /* rounded-xl */
+}
+
+.dark .is-style-highlight-box {
+    background-color: #18181b;
+    /* zinc-900 */
+    border-color: #27272a;
+    /* zinc-800 */
+    color: #e4e4e7;
+    /* zinc-200 */
+}
+
+/* News Quote */
+.wp-block-quote.is-style-news-quote {
+    border-left: 4px solid #ef4444;
+    /* red-500 (Primary accent) */
+    padding-left: 1.5rem;
+    font-family: 'Epilogue', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #1f2937;
+    /* gray-800 */
+    background: transparent;
+}
+
+.dark .wp-block-quote.is-style-news-quote {
+    color: #f4f4f5;
+    /* zinc-100 */
+}
+
+.wp-block-quote.is-style-news-quote cite {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    /* gray-500 */
+}

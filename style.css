@@ -1,0 +1,218 @@
+/*
+Theme Name: Modern News
+Theme URI: https://bijidata.online
+Author: Roedy
+Author URI: https://bijidata.online
+Description: A dynamic, modern, and SEO-optimized news theme with Geo-targeting.
+Version: 1.2.0
+Tested up to: 6.8.1
+Requires at least: 6.0
+Requires PHP: 7.4
+Text Domain: modernnews
+*/
+
+/* Reset & Basic Box Sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --font-heading: 'Inter', sans-serif;
+    --font-body: 'Lora', serif;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    margin-bottom: 0.5em;
+    font-weight: 700;
+}
+
+/* Image Reset */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ------------------------------------------------------------------------- *
+ *  WordPress Core Classes
+ * ------------------------------------------------------------------------- */
+.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+.aligncenter,
+div.aligncenter {
+    display: block;
+    margin: 5px auto 5px auto;
+}
+
+.alignright {
+    float: right;
+    margin: 5px 0 20px 20px;
+}
+
+.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+
+.alignwide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.alignfull {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+/* Captions */
+.wp-caption {
+    margin-bottom: 1.5em;
+    max-width: 100%;
+}
+
+.wp-caption img[class*="wp-image-"] {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wp-caption .wp-caption-text {
+    margin: 0.8075em 0;
+    font-size: 0.8em;
+    text-align: center;
+}
+
+/* Screen Reader Text */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+.screen-reader-text:focus {
+    background-color: #fbd6d6;
+    clip: auto !important;
+    clip-path: none;
+    color: #444;
+    display: block;
+    font-size: 1em;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+
+    /* ------------------------------------------------------------------------- *
+ *  Pagination Styling
+ * ------------------------------------------------------------------------- */
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 3rem;
+    }
+
+    .page-numbers {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.5rem;
+        height: 2.5rem;
+        padding: 0 0.75rem;
+        border-radius: 0.5rem;
+        font-weight: 700;
+        text-decoration: none;
+        background-color: #f8fbfb;
+        /* soft-gray */
+        color: #508995;
+        /* text-muted */
+        transition: all 0.2s ease;
+    }
+
+    .page-numbers:hover,
+    .page-numbers:focus {
+        background-color: #e8f1f3;
+        /* border-gray */
+        color: #168098;
+        /* primary */
+    }
+
+    .page-numbers.current {
+        background-color: #168098;
+        /* primary */
+        color: #ffffff;
+    }
+
+    .page-numbers.dots {
+        background-color: transparent;
+        color: #94a3b8;
+    }
+
+    /* Dark Mode Support for Pagination (manual since not using Tailwind classes here) */
+    @media (prefers-color-scheme: dark) {
+        .page-numbers {
+            background-color: #27272a;
+            color: #a1a1aa;
+        }
+
+        .page-numbers:hover,
+        .page-numbers:focus {
+            background-color: #3f3f46;
+            color: #ffffff;
+        }
+
+        .page-numbers.current {
+            background-color: #168098;
+            color: #ffffff;
+        }
+    }
+
+    :root[class~="dark"] .page-numbers {
+        background-color: #27272a;
+        color: #a1a1aa;
+    }
+
+    :root[class~="dark"] .page-numbers:hover {
+        background-color: #3f3f46;
+        color: #ffffff;
+    }
+
+    :root[class~="dark"] .page-numbers.current {
+        background-color: #168098;
+        color: #ffffff;
+    }
