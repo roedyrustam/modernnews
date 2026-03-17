@@ -66,6 +66,7 @@ class ModernNews_GitHub_Updater {
     public function initialize() {
         add_filter('pre_set_site_transient_update_themes', array($this, 'modify_transient'));
         add_filter('upgrader_post_install', array($this, 'after_install'), 10, 3);
+        add_filter('http_request_args', array($this, 'download_package'), 10, 2);
     }
 
     public function modify_transient($transient) {
@@ -102,5 +103,19 @@ class ModernNews_GitHub_Updater {
         $result['destination'] = $install_directory;
 
         return $result;
+    }
+
+    public function download_package($args, $url) {
+        if (is_null($this->authorize_token)) {
+            return $args;
+        }
+
+        // Check if the URL is for this repository's zipball
+        if (strpos($url, "api.github.com/repos/{$this->username}/{$this->repository}/zipball") !== false || 
+            strpos($url, "codeload.github.com/{$this->username}/{$this->repository}/legacy.zip") !== false) {
+            $args['headers']['Authorization'] = "token {$this->authorize_token}";
+        }
+
+        return $args;
     }
 }

@@ -55,7 +55,14 @@ function modernnews_setup()
         'footer' => __('Footer Menu', 'modernnews'),
         'mobile' => __('Mobile Menu', 'modernnews'),
     ));
+
+    // Support for modern block features
+    add_theme_support('appearance-tools');
+    add_theme_support('border');
+    add_theme_support('link-color');
+    add_theme_support('spacing');
 }
+
 add_action('after_setup_theme', 'modernnews_setup');
 
 // Include Custom Widgets
