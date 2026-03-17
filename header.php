@@ -12,12 +12,35 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
 
     <!-- Dark Mode Init (Minimize FOUC) -->
+    <?php
+    $default_appearance = function_exists('modernnews_get_appearance') ? modernnews_get_appearance() : 'system';
+    ?>
     <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        (function() {
+            const defaultAppearance = '<?php echo esc_js($default_appearance); ?>';
+            const storageTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            let isDark = false;
+            
+            if (storageTheme === 'dark') {
+                isDark = true;
+            } else if (storageTheme === 'light') {
+                isDark = false;
+            } else if (!storageTheme) {
+                if (defaultAppearance === 'dark') {
+                    isDark = true;
+                } else if (defaultAppearance === 'system') {
+                    isDark = systemDark;
+                }
+            }
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
     </script>
 
     <!-- Tailwind CSS (CDN for development as requested) -->
@@ -453,7 +476,7 @@
                 <div class="text-center">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">
                         &copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?><br>
-                        <span class="opacity-50 font-medium">Modern News Premium v1.2.0</span>
+                        <span class="opacity-50 font-medium">Modern News Premium v1.3.0</span>
                     </p>
                 </div>
             </div>

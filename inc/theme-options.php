@@ -62,6 +62,7 @@ function modernnews_theme_settings_init()
     add_settings_section('modernnews_theme_section_general', 'General Settings', 'modernnews_theme_section_general_cb', 'modernnews_theme_options');
     add_settings_field('header_logo_url', 'Header Logo (URL)', 'modernnews_theme_field_text_cb', 'modernnews_theme_options', 'modernnews_theme_section_general', ['label_for' => 'header_logo_url']);
     add_settings_field('sticky_header', 'Enable Sticky Header', 'modernnews_theme_field_checkbox_cb', 'modernnews_theme_options', 'modernnews_theme_section_general', ['label_for' => 'sticky_header']);
+    add_settings_field('default_appearance', 'Default Appearance', 'modernnews_theme_field_appearance_cb', 'modernnews_theme_options', 'modernnews_theme_section_general', ['label_for' => 'default_appearance']);
 
     // --- Section: Visual Style ---
     add_settings_section('modernnews_theme_section_style', 'Visual Style', 'modernnews_theme_section_style_cb', 'modernnews_theme_options');
@@ -303,6 +304,29 @@ function modernnews_theme_field_select_layout_cb($args)
     echo '<option value="list" ' . selected($val, 'list', false) . '>List View</option>';
     echo '<option value="grid" ' . selected($val, 'grid', false) . '>Grid View</option>';
     echo '</select>';
+}
+
+function modernnews_theme_field_appearance_cb($args)
+{
+    $options = get_option('modernnews_theme_options');
+    $value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : 'system';
+    ?>
+    <select id="<?php echo esc_attr($args['label_for']); ?>" name="modernnews_theme_options[<?php echo esc_attr($args['label_for']); ?>]">
+        <option value="system" <?php selected($value, 'system'); ?>>Follow System (Recommended)</option>
+        <option value="light" <?php selected($value, 'light'); ?>>Forced Light</option>
+        <option value="dark" <?php selected($value, 'dark'); ?>>Forced Dark</option>
+    </select>
+    <p class="description">Choose how the theme should appear by default for new visitors.</p>
+    <?php
+}
+
+/**
+ * Helper to get current appearance mode
+ */
+function modernnews_get_appearance()
+{
+    $options = get_option('modernnews_theme_options');
+    return isset($options['default_appearance']) ? $options['default_appearance'] : 'system';
 }
 
 // 3. Admin Menu

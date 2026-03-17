@@ -6,23 +6,21 @@ jQuery(document).ready(function ($) {
     const html = document.documentElement;
     const themeToggles = document.querySelectorAll('#theme-toggle, #drawer-theme-toggle');
 
-    // Check Local Storage or System Preference
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        html.classList.add('dark');
-    } else {
-        html.classList.remove('dark');
+    function updateTheme(isDark) {
+        if (isDark) {
+            html.classList.add('dark');
+            localStorage.theme = 'dark';
+        } else {
+            html.classList.remove('dark');
+            localStorage.theme = 'light';
+        }
     }
 
     themeToggles.forEach(toggle => {
         toggle.addEventListener('click', (e) => {
             e.preventDefault();
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                localStorage.theme = 'light';
-            } else {
-                html.classList.add('dark');
-                localStorage.theme = 'dark';
-            }
+            const currentIsDark = html.classList.contains('dark');
+            updateTheme(!currentIsDark);
         });
     });
 
