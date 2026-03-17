@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "color": {
+      "palette": [
+        {
+          "slug": "primary",
+          "color": "#168098",
+          "name": "Primary"
+        },
+        {
+          "slug": "background-light",
+          "color": "#f8f9fa",
+          "name": "Background Light"
+        },
+        {
+          "slug": "background-dark",
+          "color": "#09090b",
+          "name": "Background Dark"
+        }
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        {
+          "fontFamily": "Inter, system-ui, sans-serif",
+          "name": "Heading",
+          "slug": "heading"
+        },
+        {
+          "fontFamily": "Lora, serif",
+          "name": "Body",
+          "slug": "body"
+        }
+      ]
+    }
+  }
+}
