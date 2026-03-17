@@ -101,6 +101,11 @@ function modernnews_theme_settings_init()
     add_settings_field('archive_layout', 'Archive Layout', 'modernnews_theme_field_select_layout_cb', 'modernnews_theme_options', 'modernnews_theme_section_archive', ['label_for' => 'archive_layout']);
     add_settings_field('archive_show_excerpt', 'Show Post Excerpt', 'modernnews_theme_field_checkbox_cb', 'modernnews_theme_options', 'modernnews_theme_section_archive', ['label_for' => 'archive_show_excerpt']);
 
+    // --- Section: Update Settings ---
+    add_settings_section('modernnews_theme_section_update', 'GitHub Update Settings', 'modernnews_theme_section_update_cb', 'modernnews_theme_options');
+    add_settings_field('github_repo', 'GitHub Repository', 'modernnews_theme_field_text_cb', 'modernnews_theme_options', 'modernnews_theme_section_update', ['label_for' => 'github_repo']);
+    add_settings_field('github_token', 'GitHub Access Token', 'modernnews_theme_field_text_cb', 'modernnews_theme_options', 'modernnews_theme_section_update', ['label_for' => 'github_token']);
+
 
 }
 add_action('admin_init', 'modernnews_theme_settings_init');
@@ -180,6 +185,10 @@ function modernnews_theme_section_single_cb()
 function modernnews_theme_section_archive_cb()
 {
     echo '<p class="description">Global settings for category and tag archive pages.</p>';
+}
+function modernnews_theme_section_update_cb()
+{
+    echo '<p class="description">Configure GitHub repository for automatic theme updates.</p>';
 }
 
 // Field Callbacks
@@ -335,6 +344,7 @@ function modernnews_theme_options_page_html()
             <button type="button" class="modernnews-tab-link" data-tab="footer"><span class="dashicons dashicons-editor-insertmore"></span> Footer</button>
             <button type="button" class="modernnews-tab-link" data-tab="api"><span class="dashicons dashicons-rest-api"></span> API</button>
             <button type="button" class="modernnews-tab-link" data-tab="analytics"><span class="dashicons dashicons-chart-area"></span> Analytics</button>
+            <button type="button" class="modernnews-tab-link" data-tab="update"><span class="dashicons dashicons-update"></span> Update</button>
         </div>
 
         <!-- General Tab -->
@@ -469,6 +479,15 @@ function modernnews_theme_options_page_html()
                 <?php settings_fields('modernnews_theme_options'); ?>
                 <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_analytics'); ?>
                 <?php submit_button('Save Analytics Settings'); ?>
+            </form>
+        </div>
+
+        <!-- Update Tab -->
+        <div id="update" class="modernnews-tab-content">
+            <form action="options.php" method="post">
+                <?php settings_fields('modernnews_theme_options'); ?>
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_update'); ?>
+                <?php submit_button('Save Update Settings'); ?>
             </form>
         </div>
     </div>

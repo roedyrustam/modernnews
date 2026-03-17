@@ -357,6 +357,20 @@ require get_template_directory() . '/inc/seo.php';
 require get_template_directory() . '/inc/block-styles.php';
 require get_template_directory() . '/inc/ad-injection.php';
 require get_template_directory() . '/inc/paywall.php';
+require get_template_directory() . '/inc/class-github-updater.php';
+
+// Initialize GitHub Updater
+$github_repo = modernnews_get_option('github_repo');
+if (!empty($github_repo)) {
+    $repo_parts = explode('/', $github_repo);
+    if (count($repo_parts) === 2) {
+        $updater = new ModernNews_GitHub_Updater(__FILE__);
+        $updater->set_username($repo_parts[0]);
+        $updater->set_repository($repo_parts[1]);
+        $updater->authorize(modernnews_get_option('github_token'));
+        $updater->initialize();
+    }
+}
 
 
 /**
