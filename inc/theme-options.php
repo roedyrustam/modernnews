@@ -123,9 +123,16 @@ function modernnews_admin_scripts($hook)
     if ($hook != 'toplevel_page_modernnews_theme_options') {
         return;
     }
-    wp_enqueue_style('modernnews-admin-css', get_template_directory_uri() . '/assets/css/admin.css');
+
+    // Enqueue Google Fonts (Inter) for modern typography
+    wp_enqueue_style('modernnews-admin-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap', array(), null);
+
+    $css_ver = file_exists(get_template_directory() . '/assets/css/admin.css') ? filemtime(get_template_directory() . '/assets/css/admin.css') : '1.0.0';
+    $js_ver = file_exists(get_template_directory() . '/assets/js/admin.js') ? filemtime(get_template_directory() . '/assets/js/admin.js') : '1.0.0';
+
+    wp_enqueue_style('modernnews-admin-css', get_template_directory_uri() . '/assets/css/admin.css', array(), $css_ver);
     wp_enqueue_style('wp-color-picker'); // Enqueue Color Picker
-    wp_enqueue_script('modernnews-admin-js', get_template_directory_uri() . '/assets/js/admin.js', array('jquery', 'wp-color-picker'), '1.0.0', true);
+    wp_enqueue_script('modernnews-admin-js', get_template_directory_uri() . '/assets/js/admin.js', array('jquery', 'wp-color-picker'), $js_ver, true);
 }
 add_action('admin_enqueue_scripts', 'modernnews_admin_scripts');
 
@@ -328,40 +335,116 @@ function modernnews_theme_options_page_html()
             <span class="version">v1.2.0</span>
         </div>
 
-        <div class="modernnews-admin-tabs">
-            <button type="button" class="modernnews-tab-link active" data-tab="general"><span class="dashicons dashicons-admin-generic"></span> General</button>
-            <button type="button" class="modernnews-tab-link" data-tab="style"><span class="dashicons dashicons-admin-appearance"></span> Style</button>
-            <button type="button" class="modernnews-tab-link" data-tab="seo"><span class="dashicons dashicons-search"></span> SEO</button>
-            <button type="button" class="modernnews-tab-link" data-tab="single"><span class="dashicons dashicons-media-text"></span> Single Post</button>
-            <button type="button" class="modernnews-tab-link" data-tab="archive"><span class="dashicons dashicons-layout"></span> Archive</button>
-            <button type="button" class="modernnews-tab-link" data-tab="mobile"><span class="dashicons dashicons-smartphone"></span> Mobile</button>
-            <button type="button" class="modernnews-tab-link" data-tab="trending"><span class="dashicons dashicons-chart-line"></span> Trending</button>
-            <button type="button" class="modernnews-tab-link" data-tab="ads"><span class="dashicons dashicons-megaphone"></span> Ads</button>
-            <button type="button" class="modernnews-tab-link" data-tab="ticker"><span class="dashicons dashicons-sos"></span> Ticker</button>
-            <button type="button" class="modernnews-tab-link" data-tab="features"><span class="dashicons dashicons-star-filled"></span> Features</button>
-            <button type="button" class="modernnews-tab-link" data-tab="social"><span class="dashicons dashicons-share"></span> Social</button>
-            <button type="button" class="modernnews-tab-link" data-tab="contact"><span class="dashicons dashicons-email"></span> Contact</button>
-            <button type="button" class="modernnews-tab-link" data-tab="footer"><span class="dashicons dashicons-editor-insertmore"></span> Footer</button>
-            <button type="button" class="modernnews-tab-link" data-tab="api"><span class="dashicons dashicons-rest-api"></span> API</button>
-            <button type="button" class="modernnews-tab-link" data-tab="analytics"><span class="dashicons dashicons-chart-area"></span> Analytics</button>
-            <button type="button" class="modernnews-tab-link" data-tab="update"><span class="dashicons dashicons-update"></span> Update</button>
-        </div>
+        <div class="modernnews-admin-main">
+            <div class="modernnews-admin-sidebar">
+                <div class="modernnews-admin-tabs">
+                    <button type="button" class="modernnews-tab-link active" data-tab="general"><span class="dashicons dashicons-admin-generic"></span> General</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="style"><span class="dashicons dashicons-admin-appearance"></span> Style</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="seo"><span class="dashicons dashicons-search"></span> SEO</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="single"><span class="dashicons dashicons-media-text"></span> Single Post</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="archive"><span class="dashicons dashicons-layout"></span> Archive</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="mobile"><span class="dashicons dashicons-smartphone"></span> Mobile</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="trending"><span class="dashicons dashicons-chart-line"></span> Trending</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="ads"><span class="dashicons dashicons-megaphone"></span> Ads</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="ticker"><span class="dashicons dashicons-sos"></span> Ticker</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="features"><span class="dashicons dashicons-star-filled"></span> Features</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="social"><span class="dashicons dashicons-share"></span> Social</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="contact"><span class="dashicons dashicons-email"></span> Contact</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="footer"><span class="dashicons dashicons-editor-insertmore"></span> Footer</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="api"><span class="dashicons dashicons-rest-api"></span> API</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="analytics"><span class="dashicons dashicons-chart-area"></span> Analytics</button>
+                    <button type="button" class="modernnews-tab-link" data-tab="update"><span class="dashicons dashicons-update"></span> Update</button>
+                </div>
+            </div>
 
-        <!-- General Tab -->
-        <div id="general" class="modernnews-tab-content active">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
+            <div class="modernnews-admin-content">
+
+        <!-- Main Settings Form -->
+        <form action="options.php" method="post" id="modernnews-theme-form">
+            <?php settings_fields('modernnews_theme_options'); ?>
+
+            <!-- General Tab -->
+            <div id="general" class="modernnews-tab-content active">
                 <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_general'); ?>
-                <?php submit_button('Save General Settings'); ?>
-            </form>
-        </div>
+            </div>
 
-        <!-- Visual Style Tab -->
-        <div id="style" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
+            <!-- Visual Style Tab -->
+            <div id="style" class="modernnews-tab-content">
                 <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_style'); ?>
-                <?php submit_button('Save Style Settings'); ?>
+            </div>
+
+            <!-- SEO Tab -->
+            <div id="seo" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_seo'); ?>
+            </div>
+
+            <!-- Single Post Tab -->
+            <div id="single" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_single'); ?>
+            </div>
+
+            <!-- Archive Layout Tab -->
+            <div id="archive" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_archive'); ?>
+            </div>
+
+            <!-- Mobile Layout Tab -->
+            <div id="mobile" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_mobile'); ?>
+            </div>
+
+            <!-- Trending Tab -->
+            <div id="trending" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_trending'); ?>
+            </div>
+
+            <!-- News Ticker Tab -->
+            <div id="ticker" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_ticker'); ?>
+            </div>
+
+            <!-- Features Tab -->
+            <div id="features" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_features'); ?>
+            </div>
+
+            <!-- Social Media Tab -->
+            <div id="social" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_social'); ?>
+            </div>
+
+            <!-- Contact Tab -->
+            <div id="contact" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_contact'); ?>
+            </div>
+
+            <!-- Footer Tab -->
+            <div id="footer" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_footer'); ?>
+            </div>
+
+            <!-- API Tab -->
+            <div id="api" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_api'); ?>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div id="analytics" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_analytics'); ?>
+            </div>
+
+            <!-- Update Tab -->
+            <div id="update" class="modernnews-tab-content">
+                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_update'); ?>
+            </div>
+        </form>
+
+        <!-- Ads Manager Tab (Separate Form) -->
+        <div id="ads" class="modernnews-tab-content">
+            <form action="options.php" method="post">
+                <?php settings_fields('modernnews_ads'); ?>
+                <?php do_settings_sections('modernnews_ads'); ?>
+                <?php submit_button('Save Ad Settings'); ?>
             </form>
         </div>
 
@@ -410,85 +493,29 @@ function modernnews_theme_options_page_html()
             </form>
         </div>
 
-        <!-- Ads Manager Tab (Different Option Group) -->
-        <div id="ads" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_ads'); ?>
-                <?php do_settings_sections('modernnews_ads'); ?>
-                <?php submit_button('Save Ad Settings'); ?>
-            </form>
+        </div>
+    </div>
+
+    <div class="modernnews-admin-save-bar">
+        <div class="save-bar-info">
+            <span class="dashicons dashicons-info"></span>
+            <p><?php echo esc_html__('Remember to save your changes after modifying settings.', 'modernnews'); ?></p>
+        </div>
+        <div class="save-bar-actions">
+            <button type="submit" form="modernnews-theme-form" class="button button-primary button-large"><?php echo esc_html__('Save Theme Settings', 'modernnews'); ?></button>
+        </div>
+    </div>
+            </div>
         </div>
 
-        <!-- News Ticker Tab -->
-        <div id="ticker" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_ticker'); ?>
-                <?php submit_button('Save Ticker Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Features Tab -->
-        <div id="features" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_features'); ?>
-                <?php submit_button('Save Feature Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Social Media Tab -->
-        <div id="social" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_social'); ?>
-                <?php submit_button('Save Social Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Contact Tab -->
-        <div id="contact" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_contact'); ?>
-                <?php submit_button('Save Contact Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Footer Tab -->
-        <div id="footer" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_footer'); ?>
-                <?php submit_button('Save Footer Settings'); ?>
-            </form>
-        </div>
-
-        <!-- API Tab -->
-        <div id="api" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_api'); ?>
-                <?php submit_button('Save API Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Analytics Tab -->
-        <div id="analytics" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_analytics'); ?>
-                <?php submit_button('Save Analytics Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Update Tab -->
-        <div id="update" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_update'); ?>
-                <?php submit_button('Save Update Settings'); ?>
-            </form>
+        <div class="modernnews-admin-save-bar">
+            <div class="save-bar-info">
+                <span class="dashicons dashicons-info"></span>
+                <p><?php echo esc_html__('Remember to save your changes after modifying settings.', 'modernnews'); ?></p>
+            </div>
+            <div class="save-bar-actions">
+                <button type="submit" form="modernnews-options-form" class="button button-primary button-large"><?php echo esc_html__('Save Theme Settings', 'modernnews'); ?></button>
+            </div>
         </div>
     </div>
     <?php
