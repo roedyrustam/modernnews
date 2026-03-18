@@ -149,68 +149,110 @@
     </div>
 </footer>
 
-<!-- Mobile Bottom Navigation -->
 <!-- Mobile Bottom Navigation (Premium) -->
 <nav id="mobile-bottom-nav"
-    class="fixed bottom-0 left-0 right-0 z-[60] xl:hidden bg-white/90 dark:bg-zinc-900/90 backdrop-blur-lg border-t border-gray-100 dark:border-zinc-800 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)] transition-transform duration-300">
-    <div class="grid grid-cols-5 items-end <?php echo (modernnews_get_option('mobile_compact_mode', true)) ? 'h-12' : 'h-16'; ?> w-full">
+    class="fixed bottom-0 left-0 right-0 z-[60] xl:hidden bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-gray-100 dark:border-zinc-800 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.08)] transition-transform duration-300">
+    <div class="grid grid-cols-5 items-center <?php echo (modernnews_get_option('mobile_compact_mode', true)) ? 'h-14' : 'h-16'; ?> w-full max-w-md mx-auto px-2">
 
         <!-- 1. Home -->
         <a href="<?php echo esc_url(home_url('/')); ?>"
-            class="flex flex-col items-center justify-end w-full h-full pb-1.5 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-colors group <?php echo is_front_page() ? 'active text-primary dark:text-primary' : ''; ?>"
+            class="flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-all duration-300 group <?php echo is_front_page() ? 'active text-primary dark:text-primary' : ''; ?>"
             aria-label="Beranda">
-            <span class="material-symbols-outlined text-[24px] mb-0.5 group-[.active]:filled">home</span>
-            <span class="text-[10px] font-medium">Beranda</span>
+            <div class="relative flex flex-col items-center">
+                <span class="material-symbols-outlined text-[24px] mb-0.5 group-[.active]:filled group-active:scale-90 transition-transform">home</span>
+                <span class="text-[10px] font-bold tracking-tight">Beranda</span>
+                <?php if (is_front_page()): ?><span class="absolute -bottom-1.5 size-1 bg-primary rounded-full"></span><?php endif; ?>
+            </div>
         </a>
 
-        <!-- 2. Trending -->
-        <?php
-        $trending_cat_id = modernnews_get_option('trending_category_id');
-        $trending_url = !empty($trending_cat_id) ? get_category_link($trending_cat_id) : home_url('/?orderby=comment_count');
-        $is_trending_active = !empty($trending_cat_id) ? is_category($trending_cat_id) : (isset($_GET['orderby']) && $_GET['orderby'] == 'comment_count');
-        ?>
-        <a href="<?php echo esc_url($trending_url); ?>"
-            class="flex flex-col items-center justify-end w-full h-full pb-1.5 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-colors group <?php echo $is_trending_active ? 'active text-primary dark:text-primary' : ''; ?>"
-            aria-label="Trending">
-            <span class="material-symbols-outlined text-[24px] mb-0.5 group-[.active]:filled">trending_up</span>
-            <span class="text-[10px] font-medium">Trending</span>
-        </a>
+        <!-- 2. Explore / Topics -->
+        <button id="mobile-explore-trigger"
+            class="mobile-menu-toggle flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-all duration-300 group"
+            aria-label="Jelajah">
+            <div class="relative flex flex-col items-center">
+                <span class="material-symbols-outlined text-[24px] mb-0.5 group-active:scale-90 transition-transform">explore</span>
+                <span class="text-[10px] font-bold tracking-tight">Topik</span>
+            </div>
+        </button>
 
         <!-- 3. Central FAB (Menu) -->
-        <div class="relative w-full h-full flex justify-center items-end">
-            <div class="absolute -top-5 flex flex-col items-center">
+        <div class="relative w-full h-full flex justify-center items-center">
+            <div class="absolute -top-6 flex flex-col items-center">
                 <button id="mobile-menu-trigger-bottom"
-                    class="flex flex-col items-center justify-center w-12 h-12 bg-primary text-white rounded-full shadow-[0_8px_20px_rgba(var(--color-primary),0.4)] hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-gray-50 dark:ring-zinc-900 border-4 border-transparent"
+                    class="flex items-center justify-center w-14 h-14 bg-primary text-white rounded-2xl shadow-[0_8px_25px_rgba(var(--color-primary),0.4)] hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-white dark:ring-zinc-900 overflow-hidden group"
                     aria-label="Menu">
-                    <span class="material-symbols-outlined text-[26px]">grid_view</span>
+                    <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span class="material-symbols-outlined text-[28px] relative z-10">grid_view</span>
                 </button>
-                <span class="text-[10px] font-medium text-gray-400 mt-1">Menu</span>
             </div>
         </div>
 
-        <!-- 4. Search -->
-        <button
-            class="modernnews-search-trigger flex flex-col items-center justify-end w-full h-full pb-1.5 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-colors group"
-            aria-label="Cari">
-            <span class="material-symbols-outlined text-[24px] mb-0.5">search</span>
-            <span class="text-[10px] font-medium">Cari</span>
-        </button>
+        <!-- 4. Trending / Live -->
+        <?php
+        $show_live = modernnews_get_option('enable_live_streaming', false);
+        $live_url = modernnews_get_option('live_streaming_url');
+        
+        if ($show_live && !empty($live_url)): ?>
+            <a href="<?php echo esc_url($live_url); ?>"
+                class="flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-500 transition-all duration-300 group <?php echo is_page_template('page-live-streaming.php') ? 'active text-red-500' : ''; ?>"
+                aria-label="Live">
+                <div class="relative flex flex-col items-center">
+                    <span class="material-symbols-outlined text-[24px] mb-0.5 group-[.active]:filled animate-pulse">live_tv</span>
+                    <span class="text-[10px] font-bold tracking-tight">Live</span>
+                    <?php if (is_page_template('page-live-streaming.php')): ?><span class="absolute -bottom-1.5 size-1 bg-red-500 rounded-full"></span><?php endif; ?>
+                </div>
+            </a>
+        <?php else: 
+            $trending_cat_id = modernnews_get_option('trending_category_id');
+            $trending_url = !empty($trending_cat_id) ? get_category_link($trending_cat_id) : home_url('/?sort=popular');
+            $is_trending_active = !empty($trending_cat_id) ? is_category($trending_cat_id) : (isset($_GET['sort']) && $_GET['sort'] == 'popular');
+            ?>
+            <a href="<?php echo esc_url($trending_url); ?>"
+                class="flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-all duration-300 group <?php echo $is_trending_active ? 'active text-primary dark:text-primary' : ''; ?>"
+                aria-label="Populer">
+                <div class="relative flex flex-col items-center">
+                    <span class="material-symbols-outlined text-[24px] mb-0.5 group-[.active]:filled">local_fire_department</span>
+                    <span class="text-[10px] font-bold tracking-tight">Populer</span>
+                    <?php if ($is_trending_active): ?><span class="absolute -bottom-1.5 size-1 bg-primary rounded-full"></span><?php endif; ?>
+                </div>
+            </a>
+        <?php endif; ?>
 
         <!-- 5. User / Account -->
         <?php if (is_user_logged_in()): ?>
             <a href="<?php echo esc_url(get_edit_profile_url()); ?>"
-                class="flex flex-col items-center justify-end w-full h-full pb-1.5 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-colors group"
-                aria-label="Akun">
-                <?php echo get_avatar(get_current_user_id(), 22, '', '', array('class' => 'rounded-full mb-0.5 border border-gray-200 dark:border-zinc-700')); ?>
-                <span class="text-[10px] font-medium">Akun</span>
+                class="flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-all duration-300 group"
+                aria-label="Profil">
+                <div class="relative flex flex-col items-center">
+                    <div class="size-6 rounded-full mb-0.5 border-2 border-transparent group-hover:border-primary transition-colors overflow-hidden">
+                        <?php echo get_avatar(get_current_user_id(), 24, '', '', array('class' => 'w-full h-full object-cover')); ?>
+                    </div>
+                    <span class="text-[10px] font-bold tracking-tight">Profil</span>
+                </div>
             </a>
-        <?php else: ?>
-            <a href="<?php echo esc_url(get_post_type_archive_link('post') . '?orderby=comment_count'); ?>"
-                class="flex flex-col items-center justify-end w-full h-full pb-1.5 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-colors group"
-                aria-label="Trending">
-                <span class="material-symbols-outlined text-[24px] mb-0.5">trending_up</span>
-                <span class="text-[10px] font-medium">Trending</span>
-            </a>
+        <?php else: 
+            $citizen_news_enabled = modernnews_get_option('enable_citizen_news', false);
+            $citizen_news_url = modernnews_get_option('citizen_news_url');
+            if ($citizen_news_enabled && !empty($citizen_news_url)): ?>
+                <a href="<?php echo esc_url($citizen_news_url); ?>"
+                    class="flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-all duration-300 group <?php echo is_page_template('page-submit-news.php') ? 'active text-primary' : ''; ?>"
+                    aria-label="Kirim Berita">
+                    <div class="relative flex flex-col items-center">
+                        <span class="material-symbols-outlined text-[24px] mb-0.5 group-[.active]:filled">edit_note</span>
+                        <span class="text-[10px] font-bold tracking-tight">Lapor</span>
+                        <?php if (is_page_template('page-submit-news.php')): ?><span class="absolute -bottom-1.5 size-1 bg-primary rounded-full"></span><?php endif; ?>
+                    </div>
+                </a>
+            <?php else: ?>
+                <button
+                    class="modernnews-search-trigger flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-all duration-300 group"
+                    aria-label="Cari">
+                    <div class="relative flex flex-col items-center">
+                        <span class="material-symbols-outlined text-[24px] mb-0.5">search</span>
+                        <span class="text-[10px] font-bold tracking-tight">Cari</span>
+                    </div>
+                </button>
+            <?php endif; ?>
         <?php endif; ?>
 
     </div>
