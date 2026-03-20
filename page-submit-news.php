@@ -141,11 +141,21 @@
         <!-- Page Heading Section -->
         <div class="mb-10">
             <?php
+            // Success Message
             if (isset($_GET['submission']) && $_GET['submission'] == 'success') {
-                echo '<div class="mb-6 p-4 bg-green-100 border border-green-200 text-green-700 rounded-xl flex items-center gap-3">
+                echo '<div class="mb-6 p-4 bg-green-100 border border-green-200 text-green-700 rounded-xl flex items-center gap-3" role="alert">
                     <i class="ri-checkbox-circle-line text-xl"></i>
-                    <strong>Terima kasih!</strong> Laporan Anda berhasil dikirim dan sedang ditinjau oleh redaksi.
+                    <div><strong>Terima kasih!</strong> Laporan Anda berhasil dikirim dan sedang ditinjau oleh redaksi.</div>
                 </div>';
+            }
+            // Error Message (from Transient)
+            $error_msg = get_transient('modernnews_submission_error');
+            if ($error_msg) {
+                echo '<div class="mb-6 p-4 bg-red-100 border border-red-200 text-red-700 rounded-xl flex items-center gap-3" role="alert">
+                    <i class="ri-error-warning-line text-xl"></i>
+                    <div><strong>Galat:</strong> ' . esc_html($error_msg) . '</div>
+                </div>';
+                delete_transient('modernnews_submission_error');
             }
             ?>
             <div class="flex flex-wrap justify-between items-end gap-6 mb-6">
@@ -241,7 +251,7 @@
                         </div>
                         <input name="news_title" required
                             class="w-full h-14 bg-background-light dark:bg-background-dark border-2 border-transparent focus:border-primary focus:ring-0 rounded-xl px-4 text-lg font-bold dark:text-white placeholder:text-gray-400"
-                            placeholder="e.g. Flash Floods in South Jakarta Cause Major Traffic Gridlock" type="text" />
+                            placeholder="e.g. Flash Floods in South Jakarta Cause Major Traffic Gridlock" type="text" aria-required="true" aria-label="<?php esc_attr_e('Judul Berita', 'modernnews'); ?>" />
                     </div>
                     <!-- Categories -->
                     <div class="space-y-4">
@@ -250,7 +260,7 @@
                             Category</label>
                         <div class="flex flex-wrap gap-3">
                             <select name="news_category"
-                                class="w-full h-12 bg-background-light dark:bg-background-dark border-none focus:ring-2 focus:ring-primary rounded-xl px-4 text-sm font-bold text-[#558791]">
+                                class="w-full h-12 bg-background-light dark:bg-background-dark border-none focus:ring-2 focus:ring-primary rounded-xl px-4 text-sm font-bold text-[#558791]" required aria-required="true" aria-label="<?php esc_attr_e('Kategori Berita', 'modernnews'); ?>">
                                 <?php
                                 $categories = get_categories(array('hide_empty' => 0));
                                 $default_cat_id = 0;
@@ -273,7 +283,7 @@
                         <textarea name="news_content" required
                             class="w-full bg-background-light dark:bg-background-dark border-2 border-transparent focus:border-primary focus:ring-0 rounded-xl px-4 py-4 text-base leading-relaxed dark:text-white placeholder:text-gray-400"
                             placeholder="Describe the event in detail (Who, What, Where, When, Why)..."
-                            rows="6"></textarea>
+                            rows="6" aria-required="true" aria-label="<?php esc_attr_e('Isi Berita', 'modernnews'); ?>"></textarea>
                     </div>
                 </div>
             </section>

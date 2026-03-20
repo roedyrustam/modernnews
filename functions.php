@@ -380,8 +380,10 @@ function modernnews_handle_citizen_submission()
 {
     // 1. Verify Nonce & Permissions
     if (!isset($_POST['citizen_news_nonce']) || !wp_verify_nonce($_POST['citizen_news_nonce'], 'citizen_news_submission')) {
-        wp_die('Security check failed');
+        wp_die(__('Security check failed', 'modernnews'));
     }
+
+    $error_redirect = wp_get_referer();
 
     // 2. Sanitize Input
     $title = sanitize_text_field($_POST['news_title']);
@@ -419,11 +421,30 @@ function modernnews_handle_citizen_submission()
             wp_set_post_tags($post_id, $tags);
         }
 
-        // Handle File Upload (Simple version)
+        // Handle File Upload (Hardened)
         if (!empty($_FILES['news_image']['name'])) {
             require_once(ABSPATH . 'wp-admin/includes/image.php');
             require_once(ABSPATH . 'wp-admin/includes/file.php');
             require_once(ABSPATH . 'wp-admin/includes/media.php');
+
+            $file = $_FILES['news_image'];
+            $allowed_types = array('image/jpeg', 'image/png', 'image/webp');
+            $max_size = 2 * 1024 * 1024; // 2MB
+
+            // Check Size
+            if ($file['size'] > $max_size) {
+                set_transient('modernnews_submission_error', __('File teralu besar. Maksimal 2MB.', 'modernnews'), 30);
+                wp_redirect($error_redirect);
+                exit;
+            }
+
+            // Check MIME Type
+            $file_type = wp_check_filetype($file['name']);
+            if (!in_array($file_type['type'], $allowed_types)) {
+                set_transient('modernnews_submission_error', __('Format file tidak didukung. Gunakan JPG, PNG, atau WebP.', 'modernnews'), 30);
+                wp_redirect($error_redirect);
+                exit;
+            }
 
             $attachment_id = media_handle_upload('news_image', $post_id);
             if (!is_wp_error($attachment_id)) {

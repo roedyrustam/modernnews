@@ -368,7 +368,10 @@ jQuery(document).ready(function ($) {
     searchClose.on('click', closeSearch);
 
     $(document).on('keydown', function (e) {
-        if (e.key === "Escape") closeSearch();
+        if (e.key === "Escape") {
+            closeSearch();
+            closeMobileMenu();
+        }
     });
 
     // 7. Mobile Menu & Drawer Toggle
@@ -388,6 +391,10 @@ jQuery(document).ready(function ($) {
             mobileMenu.removeClass('-translate-x-full').addClass('translate-x-0');
         }, 10);
         
+        // A11y
+        mobileMenuBtn.attr('aria-expanded', 'true');
+        mobileMenuBottomBtn.attr('aria-expanded', 'true');
+        
         $('body').addClass('overflow-hidden');
     }
 
@@ -396,6 +403,10 @@ jQuery(document).ready(function ($) {
         mobileMenuOverlay.removeClass('opacity-100 pointer-events-auto').addClass('opacity-0 pointer-events-none');
         // Menu
         mobileMenu.removeClass('translate-x-0').addClass('-translate-x-full');
+        
+        // A11y
+        mobileMenuBtn.attr('aria-expanded', 'false');
+        mobileMenuBottomBtn.attr('aria-expanded', 'false');
         
         $('body').removeClass('overflow-hidden');
         

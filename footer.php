@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="site-footer bg-gray-900 border-t border-gray-800 pt-16 pb-8">
+<footer class="site-footer bg-gray-900 border-t border-gray-800 pt-16 pb-8" role="contentinfo">
     <div class="max-w-[1200px] mx-auto w-full px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <!-- Branding & About (Static/Dynamic Mix) -->
@@ -68,10 +68,14 @@
             <!-- Footer Menu 1 (Dynamic Widget Slot 2) -->
             <div>
                 <?php if (is_active_sidebar('footer-2')): ?>
-                    <?php dynamic_sidebar('footer-2'); ?>
+                    <div role="navigation" aria-label="<?php esc_attr_e('Menu Kategori Footer', 'modernnews'); ?>">
+                        <?php dynamic_sidebar('footer-2'); ?>
+                    </div>
                 <?php else: ?>
                     <h4 class="text-white font-bold mb-6">Kategori</h4>
-                    <?php wp_nav_menu(array('theme_location' => 'footer', 'container' => false, 'menu_class' => 'space-y-3', 'depth' => 1, 'fallback_cb' => false)); ?>
+                    <div role="navigation" aria-label="<?php esc_attr_e('Menu Kategori Footer', 'modernnews'); ?>">
+                        <?php wp_nav_menu(array('theme_location' => 'footer', 'container' => false, 'menu_class' => 'space-y-3', 'depth' => 1, 'fallback_cb' => false)); ?>
+                    </div>
                 <?php endif; ?>
             </div>
 
@@ -151,7 +155,7 @@
 
 <!-- Mobile Bottom Navigation (Premium) -->
 <nav id="mobile-bottom-nav"
-    class="fixed bottom-0 left-0 right-0 z-[60] xl:hidden bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-gray-100 dark:border-zinc-800 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.08)] transition-transform duration-300">
+    class="fixed bottom-0 left-0 right-0 z-[60] xl:hidden bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-gray-100 dark:border-zinc-800 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.08)] transition-transform duration-300" role="navigation" aria-label="<?php esc_attr_e('Navigasi Bawah Mobile', 'modernnews'); ?>">
     <div class="grid grid-cols-5 items-center <?php echo (modernnews_get_option('mobile_compact_mode', true)) ? 'h-14' : 'h-16'; ?> w-full max-w-md mx-auto px-2">
 
         <!-- 1. Home -->
@@ -180,7 +184,7 @@
             <div class="absolute -top-6 flex flex-col items-center">
                 <button id="mobile-menu-trigger-bottom"
                     class="flex items-center justify-center w-14 h-14 bg-primary text-white rounded-2xl shadow-[0_8px_25px_rgba(var(--color-primary),0.4)] hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-white dark:ring-zinc-900 overflow-hidden group"
-                    aria-label="Menu">
+                    aria-label="<?php esc_attr_e('Buka Menu Mobile', 'modernnews'); ?>" aria-expanded="false" aria-controls="mobile-menu-container">
                     <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <span class="material-symbols-outlined text-[28px] relative z-10">grid_view</span>
                 </button>

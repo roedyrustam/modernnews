@@ -124,9 +124,9 @@
     </div>
 
     <header
-        class="site-header sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 dark:bg-zinc-900/90 dark:border-zinc-800 transition-colors duration-300">
+        class="site-header sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 dark:bg-zinc-900/90 dark:border-zinc-800 transition-colors duration-300" role="banner">
         <div
-            class="header-container container max-w-[1280px] mx-auto px-4 lg:px-10 <?php echo (modernnews_get_option('mobile_compact_mode', true)) ? 'h-14' : 'h-20'; ?> lg:h-20 flex items-center justify-between xl:justify-between gap-6">
+            class="header-container container max-w-[1280px] mx-auto px-4 lg:px-10 <?php echo (modernnews_get_option('mobile_compact_mode', true)) ? 'h-14' : 'h-20'; ?> lg:h-20 flex items-center justify-between xl:justify-between gap-6" role="navigation" aria-label="<?php esc_attr_e('Menu Utama', 'modernnews'); ?>">
 
 
             <a class="site-branding flex items-center gap-3 absolute left-1/2 -translate-x-1/2 xl:relative xl:left-0 xl:translate-x-0"
@@ -191,7 +191,7 @@
 
             <div class="flex items-center gap-4">
                 <button
-                    class="modernnews-search-trigger hidden md:flex items-center bg-[#f0f4f5] dark:bg-gray-800 rounded-lg px-3 py-2 w-48 xl:w-64 text-left group transition-colors hover:bg-gray-200 dark:hover:bg-gray-700">
+                    class="modernnews-search-trigger hidden md:flex items-center bg-[#f0f4f5] dark:bg-gray-800 rounded-lg px-3 py-2 w-48 xl:w-64 text-left group transition-colors hover:bg-gray-200 dark:hover:bg-gray-700" aria-label="<?php esc_attr_e('Cari Berita', 'modernnews'); ?>">
                     <span
                         class="material-symbols-outlined text-gray-400 text-lg group-hover:text-primary transition-colors">search</span>
                     <span
@@ -233,7 +233,7 @@
             </div>
 
             <!-- Mobile Menu Toggle (Right on Mobile) -->
-            <button id="mobile-menu-toggle" class="xl:hidden text-gray-700 dark:text-gray-200 p-2 -mr-2 relative z-20">
+            <button id="mobile-menu-toggle" class="xl:hidden text-gray-700 dark:text-gray-200 p-2 -mr-2 relative z-20" aria-label="<?php esc_attr_e('Buka Menu Mobile', 'modernnews'); ?>" aria-expanded="false" aria-controls="mobile-menu-container">
                 <span class="material-symbols-outlined text-2xl lg:text-3xl">menu</span>
             </button>
         </div>
