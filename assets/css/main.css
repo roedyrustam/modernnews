@@ -49,21 +49,27 @@
 }
 
 /* --- Dark Mode Palette --- */
-.dark {
+.dark,
+html.dark {
     --background-body: #09090b;
     --background-white: #18181b;
     --background-dark: #000000;
-    
+
     --text-main: #f4f4f5;
     --text-light: #a1a1aa;
     --text-muted: #71717a;
-    
+
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+    border-color: #27272a;
+    color-scheme: dark;
 }
 
-.dark {
-    border-color: #27272a;
+/* Force body background in dark mode (overrides Tailwind bg-background-light) */
+html.dark body {
+    background-color: #09090b !important;
+    color: #f4f4f5 !important;
 }
 
 
@@ -607,370 +613,182 @@ img {
     transition: all 0.2s ease;
 }
 
+
+
+/* ==========================================================================
+ *  12. Dark Mode — Comprehensive Readability Fixes
+ * ========================================================================== */
+
+/* Hero gradient — darker overlay so text pops */
+.dark .hero-content {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
 }
 
-.widget-title {
-    color: var(--text-white);
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 0.75rem;
+/* Article / entry body text */
+.dark .entry-content {
+    color: #e4e4e7;
 }
 
-.site-footer a {
-    color: #ced4da;
+.dark .entry-content p,
+.dark .entry-content li,
+.dark .entry-content td {
+    color: #d4d4d8;
 }
 
-.site-footer a:hover {
-    color: var(--text-white);
+.dark .entry-content h1,
+.dark .entry-content h2,
+.dark .entry-content h3,
+.dark .entry-content h4,
+.dark .entry-content h5,
+.dark .entry-content h6 {
+    color: #f4f4f5;
 }
 
-.site-info {
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 2rem;
-    font-size: 0.9rem;
+.dark .entry-content a {
+    color: #60a5fa;
 }
 
-/* ------------------------------------------------------------------------- *
- *  8. Responsive Media Queries
- * ------------------------------------------------------------------------- */
-@media (max-width: 992px) {
-    :root {
-        --container-width: 960px;
-    }
+.dark .entry-content a:hover {
+    color: #93c5fd;
 }
 
-@media (max-width: 768px) {
-    :root {
-        --container-width: 100%;
-        --gap-md: 1rem;
-    }
-
-    .header-container {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .main-navigation ul {
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .hero-post {
-        height: 350px;
-    }
-
-    .hero-title {
-        font-size: 1.75rem;
-    }
-
-    .news-grid {
-        grid-template-columns: 1fr;
-    }
+.dark .entry-content blockquote {
+    border-left-color: #3f3f46;
+    color: #a1a1aa;
+    background-color: #1c1c1e;
 }
 
-/* ------------------------------------------------------------------------- *
- *  9. Pagination
- * ------------------------------------------------------------------------- */
-.navigation.pagination {
-    margin-top: 3rem;
-    text-align: center;
+.dark .entry-content code,
+.dark .entry-content pre {
+    background-color: #27272a;
+    color: #e4e4e7;
+    border-color: #3f3f46;
 }
 
-.nav-links {
-    display: inline-flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
+.dark .entry-content table th {
+    background-color: #27272a;
+    color: #f4f4f5;
+    border-color: #3f3f46;
 }
 
-.nav-links a,
-.nav-links span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    height: 40px;
-    padding: 0 10px;
-    border-radius: var(--border-radius-sm);
-    background: var(--background-white);
-    color: var(--text-main);
-    font-weight: 600;
-    text-decoration: none;
-    border: 1px solid #e9ecef;
-    transition: all 0.2s ease;
+.dark .entry-content table td {
+    border-color: #3f3f46;
 }
 
-.nav-links a:hover {
+/* News card readability */
+.dark .news-card-title a {
+    color: #f4f4f5;
+}
+
+.dark .news-card-title a:hover {
+    color: #60a5fa;
+}
+
+.dark .news-card-excerpt {
+    color: #a1a1aa;
+}
+
+.dark .news-card-meta {
+    color: #71717a;
+}
+
+/* Section headers */
+.dark .section-header {
+    border-bottom-color: #27272a;
+}
+
+.dark .section-title {
+    color: #f4f4f5;
+}
+
+/* Pagination in dark mode */
+.dark .nav-links a,
+.dark .nav-links span {
+    background: #27272a;
+    color: #a1a1aa;
+    border-color: #3f3f46;
+}
+
+.dark .nav-links a:hover {
     border-color: var(--primary-color);
-    color: var(--primary-color);
+    color: #60a5fa;
 }
 
-.nav-links span.current {
-    background: var(--primary-color);
-    color: #fff;
-    border-color: var(--primary-color);
+/* Sidebar & widget text */
+.dark .widget {
+    color: #d4d4d8;
 }
 
-/* ------------------------------------------------------------------------- *
- *  10. News Ticker Animation
- * ------------------------------------------------------------------------- */
-.modernnews-ticker-wrap {
-    overflow: hidden;
-    white-space: nowrap;
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+.dark .widget-title {
+    color: #f4f4f5;
+    border-bottom-color: #3f3f46;
 }
 
-.modernnews-ticker-move {
-    display: inline-block;
-    white-space: nowrap;
-    animation: ticker-scroll 40s linear infinite;
-    padding-left: 100%;
-    /* Start from outside */
+.dark .widget a {
+    color: #a1a1aa;
 }
 
-/* If we duplicated content via PHP, we use a different strategy for seamless loop */
-/* Overriding standard move for seamless loop since content IS duplicated in PHP */
-.modernnews-ticker-move {
-    padding-left: 0;
-    width: max-content;
-    /* Ensure container fits all items */
+.dark .widget a:hover {
+    color: #f4f4f5;
 }
 
-@keyframes ticker-scroll {
-    0% {
-        transform: translate3d(0, 0, 0);
-    }
-
-    100% {
-        transform: translate3d(-50%, 0, 0);
-    }
+/* Related posts text */
+.dark .related-posts h4 a,
+.dark section h4 a {
+    color: #f4f4f5;
 }
 
-.modernnews-ticker-move:hover {
-    animation-play-state: paused;
+.dark section p.text-gray-500 {
+    color: #71717a;
 }
 
-/* ------------------------------------------------------------------------- *
- *  11. Mobile Native Experience (Sidebar Drawer)
- * ------------------------------------------------------------------------- */
-
-/* Safe Area Support */
-:root {
-    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+/* Archive / index page text */
+.dark .news-card {
+    background: #18181b;
+    border: 1px solid #27272a;
 }
 
-.pb-safe {
-    padding-bottom: var(--safe-area-bottom);
+/* Search form */
+.dark .search-form input[type="search"] {
+    background-color: #27272a;
+    color: #f4f4f5;
+    border-color: #3f3f46;
 }
 
-/* Overlay Backdrop */
-/* Overlay Backdrop handled by Tailwind */
-
-
-
-/* Sidebar Drawer */
-#mobile-menu-container {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-overflow-scrolling: touch;
+.dark .search-form input[type="search"]::placeholder {
+    color: #71717a;
 }
 
-/* Sidebar Drawer handled partially by Tailwind */
-
-/* Fix Mobile Header Alignment */
-@media (max-width: 1279px) {
-    .site-header .header-container {
-        position: relative;
-    }
-
-    .site-branding {
-        transition: all 0.3s ease;
-    }
-
-    body.overflow-hidden {
-        overflow: hidden !important;
-        touch-action: none;
-    }
+/* Single article title */
+.dark article h1 {
+    color: #f4f4f5;
 }
 
-/* Drawer Navigation Styles */
-#mobile-menu-container .menu-item {
-    border-radius: 0.5rem;
-    transition: all 0.2s ease;
+/* Breadcrumb */
+.dark nav .text-gray-500 {
+    color: #71717a;
 }
 
-#mobile-menu-container .menu-item:active {
-    background-color: rgba(59, 130, 246, 0.1);
-    transform: scale(0.98);
+/* Tag pills */
+.dark .bg-gray-100 {
+    background-color: #27272a;
+    color: #d4d4d8;
 }
 
-/* Bottom Nav Fixes */
-#mobile-bottom-nav {
-    -webkit-tap-highlight-color: transparent;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Image captions */
+.dark figcaption {
+    color: #71717a;
 }
 
-#mobile-bottom-nav .active span.material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    transition: all 0.3s ease;
+/* Comments */
+.dark .comment-body {
+    color: #d4d4d8;
 }
 
-#mobile-bottom-nav a, #mobile-bottom-nav button {
-    position: relative;
-    overflow: hidden;
+.dark .comment-author .fn {
+    color: #f4f4f5;
 }
 
-#mobile-bottom-nav a:active span.material-symbols-outlined,
-#mobile-bottom-nav button:active span.material-symbols-outlined {
-    transform: scale(0.85);
+.dark .comment-metadata a {
+    color: #71717a;
 }
-
-/* FAB Pulse Effect */
-#mobile-menu-trigger-bottom {
-    position: relative;
-}
-
-#mobile-menu-trigger-bottom::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    background: inherit;
-    border-radius: inherit;
-    opacity: 0.3;
-    z-index: -1;
-    animation: fab-pulse 2s infinite;
-}
-
-@keyframes fab-pulse {
-    0% { transform: scale(1); opacity: 0.4; }
-    70% { transform: scale(1.3); opacity: 0; }
-    100% { transform: scale(1.3); opacity: 0; }
-}
-
-/* Smooth Transition for Icons */
-.material-symbols-outlined {
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), font-variation-settings 0.2s ease;
-}
-
-/* Adjust body padding for bottom nav */
-@media (max-width: 1279px) {
-    body {
-        padding-bottom: calc(4.5rem + var(--safe-area-bottom));
-    }
-}
-/* --- Mobile Sidebar Premium Polish --- */
-
-/* Utility: Hide Scrollbar */
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-/* Drawer Search Input */
-#mobile-menu-container input[type="search"] {
-    outline: none;
-    box-shadow: none;
-}
-
-#mobile-menu-container input[type="search"]:focus {
-    background-color: transparent;
-    box-shadow: 0 0 0 2px rgba(22, 128, 152, 0.1);
-}
-
-.dark #mobile-menu-container input[type="search"]:focus {
-    background-color: rgba(255, 255, 255, 0.03);
-}
-
-/* Menu Item Transitions */
-#mobile-menu-container .menu-item > div {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#mobile-menu-container .menu-item:active > div {
-    transform: scale(0.97);
-}
-
-/* Submenu Icon Rotation */
-.mobile-menu-toggle span {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Social Icon Hover Effects */
-#mobile-menu-container .social-links a {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#mobile-menu-container .social-links a:active {
-    transform: scale(0.9);
-}
-
-/* User Profile Section Glow */
-#mobile-menu-container .shrink-0.bg-primary::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: linear-gradient(to bottom, transparent, #fff);
-    pointer-events: none;
-}
-
-.dark #mobile-menu-container .shrink-0.bg-primary::after {
-    background: linear-gradient(to bottom, transparent, #18181b);
-}
-/* --- Archive Layout Variants --- */
-.news-card-list {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--gap-md);
-}
-
-.news-card-list .news-card-image {
-    width: 300px;
-    padding-top: 180px; /* Fixed height for list view image */
-    flex-shrink: 0;
-}
-
-.news-card-list .news-card-content {
-    padding-left: 0;
-}
-
-.news-card-grid {
-    flex-direction: column;
-}
-
-.news-card-grid .news-card-image {
-    width: 100%;
-    padding-top: 60%;
-}
-
-@media (max-width: 768px) {
-    .news-card-list {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .news-card-list .news-card-image {
-        width: 100%;
-        padding-top: 60%;
-    }
-    .news-card-list .news-card-content {
-        padding: 1.25rem;
-    }
-}
-/*
----
-Dark
-Mode
-Refinements
----
-*/
-.dark
-.hero-content
- background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%%, rgba(0, 0, 0, 0.6) 60%%, transparent 100%%); 

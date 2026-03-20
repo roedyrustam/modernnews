@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="light" <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?>>
 
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
@@ -69,6 +69,7 @@
                         "primary": "var(--color-primary)",
                         "secondary": "var(--color-secondary)",
                         "background-light": "var(--bg-light)",
+                        "background-dark": "var(--bg-dark)",
                         "accent-yellow": "#FFD600",
                     },
                     fontFamily: {
@@ -90,8 +91,28 @@
     <!-- Fonts handled by functions.php -->
 
     <style>
+        /* ---- CSS Variables required by Tailwind config & body classes ---- */
         :root {
-            /* Handled by modernnews_scripts in functions.php */
+            --color-primary: #168098;
+            --color-secondary: #6c757d;
+            --bg-light: #f4f7f8;
+            --bg-dark: #09090b;
+            --font-heading: 'Epilogue', 'Inter', sans-serif;
+            --font-body: 'Noto Sans', 'Lora', sans-serif;
+            --radius-md: 8px;
+        }
+
+        /* Dark mode: swap background & text variables */
+        html.dark {
+            --bg-light: #09090b;
+            --bg-dark: #000000;
+            color-scheme: dark;
+        }
+
+        /* Ensure the body background follows dark mode */
+        html.dark body {
+            background-color: #09090b;
+            color: #f4f4f5;
         }
 
         .material-symbols-outlined {
