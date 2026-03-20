@@ -15,6 +15,11 @@ function modernnews_social_meta_tags() {
     $image = '';
     $type = 'website';
 
+    // Disable custom meta if popular SEO plugins are active
+    if (defined('WPSEO_VERSION') || class_exists('RankMath') || class_exists('SEOPress_Pro')) {
+        return;
+    }
+
     if (is_single() || is_page()) {
         global $post;
         $title = get_the_title($post->ID);

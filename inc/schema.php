@@ -17,7 +17,17 @@ function modernnews_output_schema()
     }
     modernnews_website_schema();
 }
-add_action('wp_head', 'modernnews_output_schema');
+
+// Helper to check if SEO plugin is active
+function modernnews_is_seo_plugin_active() {
+    return defined('WPSEO_VERSION') || class_exists('RankMath') || class_exists('SEOPress_Pro');
+}
+
+add_action('wp_head', function() {
+    if (!modernnews_is_seo_plugin_active()) {
+        modernnews_output_schema();
+    }
+}, 20);
 
 /**
  * NewsArticle Schema for Single Posts

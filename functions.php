@@ -62,6 +62,8 @@ function modernnews_setup()
     add_theme_support('border');
     add_theme_support('link-color');
     add_theme_support('spacing');
+    add_theme_support('wp-block-styles');
+    add_theme_support('woocommerce');
 }
 
 add_action('after_setup_theme', 'modernnews_setup');
