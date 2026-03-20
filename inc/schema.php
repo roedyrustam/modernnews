@@ -49,7 +49,12 @@ function modernnews_single_post_schema()
                 'url' => wp_get_attachment_url(get_theme_mod('custom_logo'))
             )
         ),
-        'description' => wp_strip_all_tags(get_the_excerpt())
+        'description' => wp_strip_all_tags(get_the_excerpt()),
+        'articleBody' => wp_strip_all_tags($post->post_content),
+        'mainEntityOfPage' => array(
+            '@type' => 'WebPage',
+            '@id' => get_permalink($post->ID)
+        )
     );
 
     echo '<script type="application/ld+json">' . json_encode($schema) . '</script>' . "\n";

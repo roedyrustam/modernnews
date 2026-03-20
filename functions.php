@@ -11,6 +11,7 @@ require get_template_directory() . '/inc/class-modernnews-mega-menu-walker.php';
 require get_template_directory() . '/inc/class-modernnews-mobile-walker.php';
 require_once get_template_directory() . '/inc/performance.php';
 require_once get_template_directory() . '/inc/schema.php';
+require_once get_template_directory() . '/inc/seo.php';
 
 function modernnews_setup()
 {
@@ -484,3 +485,31 @@ add_filter('file_is_displayable_image', function($result, $path) {
     }
     return $result;
 }, 10, 2);
+
+// 4. Visual Breadcrumb Helper
+function modernnews_breadcrumb() {
+    if (is_front_page() || is_home()) return;
+
+    echo '<nav class="flex items-center gap-2 text-sm text-[#558791] mb-8" aria-label="Breadcrumb">';
+    echo '<a href="' . home_url() . '" class="hover:text-primary transition-colors">Home</a>';
+    echo '<i class="ri-arrow-right-s-line"></i>';
+
+    if (is_category() || is_single()) {
+        $category = get_the_category();
+        if ($category) {
+            $cat = $category[0];
+            echo '<a href="' . get_category_link($cat->term_id) . '" class="hover:text-primary transition-colors">' . $cat->name . '</a>';
+            if (is_single()) {
+                echo '<i class="ri-arrow-right-s-line"></i>';
+                echo '<span class="text-[#0f181a] dark:text-gray-400 font-bold truncate max-w-[200px]">' . get_the_title() . '</span>';
+            }
+        }
+    } elseif (is_page()) {
+        echo '<span class="text-[#0f181a] dark:text-gray-400 font-bold">' . get_the_title() . '</span>';
+    } elseif (is_archive()) {
+        echo '<span class="text-[#0f181a] dark:text-gray-400 font-bold">' . get_the_archive_title() . '</span>';
+    }
+
+    echo '</nav>';
+}
+

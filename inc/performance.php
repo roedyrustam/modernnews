@@ -114,30 +114,3 @@ if (!function_exists('modernnews_remove_jquery_migrate')) {
     }
     add_action('wp_default_scripts', 'modernnews_remove_jquery_migrate');
 }
-
-// 7. Dynamic Meta Descriptions (SEO)
-if (!function_exists('modernnews_add_meta_description')) {
-    function modernnews_add_meta_description()
-    {
-        $description = '';
-
-        if (is_singular()) {
-            global $post;
-            if (!empty($post->post_excerpt)) {
-                $description = $post->post_excerpt;
-            } else {
-                $description = wp_trim_words($post->post_content, 25, '...');
-            }
-        } elseif (is_category() || is_tag() || is_tax()) {
-            $description = strip_tags(term_description());
-        } elseif (is_front_page() || is_home()) {
-            $description = get_bloginfo('description');
-        }
-
-        if (!empty($description)) {
-            $description = esc_attr(trim($description));
-            echo '<meta name="description" content="' . $description . '" />' . "\n";
-        }
-    }
-    add_action('wp_head', 'modernnews_add_meta_description', 2);
-}
