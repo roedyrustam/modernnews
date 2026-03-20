@@ -155,7 +155,8 @@ function modernnews_scripts()
     wp_localize_script('modernnews-main-js', 'modernnews_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('modernnews_nonce'),
-        'weather_api_key' => modernnews_get_option('weather_api_key')
+        'weather_api_key' => modernnews_get_option('weather_api_key'),
+        'theme_url' => get_template_directory_uri()
     ));
 
     // Inline Custom Styles from Customizer (Live Preview)

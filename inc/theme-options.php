@@ -347,7 +347,6 @@ function modernnews_theme_options_page_html()
         return;
     }
 
-    // Defensive check: Ensure Settings API functions are available
     if (!function_exists('settings_fields') || !function_exists('do_settings_sections')) {
         return;
     }
@@ -382,153 +381,78 @@ function modernnews_theme_options_page_html()
             </div>
 
             <div class="modernnews-admin-content">
+                <form action="options.php" method="post" id="modernnews-theme-form">
+                    <?php settings_fields('modernnews_theme_options'); ?>
 
-        <!-- Main Settings Form -->
-        <form action="options.php" method="post" id="modernnews-theme-form">
-            <?php settings_fields('modernnews_theme_options'); ?>
+                    <div id="general" class="modernnews-tab-content active">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_general'); ?>
+                    </div>
 
-            <!-- General Tab -->
-            <div id="general" class="modernnews-tab-content active">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_general'); ?>
-            </div>
+                    <div id="style" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_style'); ?>
+                    </div>
 
-            <!-- Visual Style Tab -->
-            <div id="style" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_style'); ?>
-            </div>
+                    <div id="seo" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_seo'); ?>
+                    </div>
 
-            <!-- SEO Tab -->
-            <div id="seo" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_seo'); ?>
-            </div>
+                    <div id="single" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_single'); ?>
+                    </div>
 
-            <!-- Single Post Tab -->
-            <div id="single" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_single'); ?>
-            </div>
+                    <div id="archive" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_archive'); ?>
+                    </div>
 
-            <!-- Archive Layout Tab -->
-            <div id="archive" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_archive'); ?>
-            </div>
+                    <div id="mobile" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_mobile'); ?>
+                    </div>
 
-            <!-- Mobile Layout Tab -->
-            <div id="mobile" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_mobile'); ?>
-            </div>
+                    <div id="trending" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_trending'); ?>
+                    </div>
 
-            <!-- Trending Tab -->
-            <div id="trending" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_trending'); ?>
-            </div>
+                    <div id="ads" class="modernnews-tab-content">
+                        <?php 
+                        modernnews_do_settings_section('modernnews_theme_options', 'modernnews_ads_section_header');
+                        modernnews_do_settings_section('modernnews_theme_options', 'modernnews_ads_section_sidebar');
+                        modernnews_do_settings_section('modernnews_theme_options', 'modernnews_ads_section_single');
+                        modernnews_do_settings_section('modernnews_theme_options', 'modernnews_ads_section_sticky');
+                        ?>
+                    </div>
 
-            <!-- News Ticker Tab -->
-            <div id="ticker" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_ticker'); ?>
-            </div>
+                    <div id="ticker" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_ticker'); ?>
+                    </div>
 
-            <!-- Features Tab -->
-            <div id="features" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_features'); ?>
-            </div>
+                    <div id="features" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_features'); ?>
+                    </div>
 
-            <!-- Social Media Tab -->
-            <div id="social" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_social'); ?>
-            </div>
+                    <div id="social" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_social'); ?>
+                    </div>
 
-            <!-- Contact Tab -->
-            <div id="contact" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_contact'); ?>
-            </div>
+                    <div id="contact" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_contact'); ?>
+                    </div>
 
-            <!-- Footer Tab -->
-            <div id="footer" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_footer'); ?>
-            </div>
+                    <div id="footer" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_footer'); ?>
+                    </div>
 
-            <!-- API Tab -->
-            <div id="api" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_api'); ?>
-            </div>
+                    <div id="api" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_api'); ?>
+                    </div>
 
-            <!-- Analytics Tab -->
-            <div id="analytics" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_analytics'); ?>
-            </div>
+                    <div id="analytics" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_analytics'); ?>
+                    </div>
 
-            <!-- Update Tab -->
-            <div id="update" class="modernnews-tab-content">
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_update'); ?>
-            </div>
-        </form>
-
-        <!-- Ads Manager Tab (Separate Form) -->
-        <div id="ads" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_ads'); ?>
-                <?php do_settings_sections('modernnews_ads'); ?>
-                <?php submit_button('Save Ad Settings'); ?>
-            </form>
-        </div>
-
-        <!-- SEO Tab -->
-        <div id="seo" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_seo'); ?>
-                <?php submit_button('Save SEO Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Single Post Tab -->
-        <div id="single" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_single'); ?>
-                <?php submit_button('Save Single Post Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Archive Layout Tab -->
-        <div id="archive" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_archive'); ?>
-                <?php submit_button('Save Archive Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Mobile Layout Tab -->
-        <div id="mobile" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_mobile'); ?>
-                <?php submit_button('Save Mobile Settings'); ?>
-            </form>
-        </div>
-
-        <!-- Trending Tab -->
-        <div id="trending" class="modernnews-tab-content">
-            <form action="options.php" method="post">
-                <?php settings_fields('modernnews_theme_options'); ?>
-                <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_trending'); ?>
-                <?php submit_button('Save Trending Settings'); ?>
-            </form>
-        </div>
-
-        </div>
-    </div>
-
-    <div class="modernnews-admin-save-bar">
-        <div class="save-bar-info">
-            <span class="dashicons dashicons-info"></span>
-            <p><?php echo esc_html__('Remember to save your changes after modifying settings.', 'modernnews'); ?></p>
-        </div>
-        <div class="save-bar-actions">
-            <button type="submit" form="modernnews-theme-form" class="button button-primary button-large"><?php echo esc_html__('Save Theme Settings', 'modernnews'); ?></button>
-        </div>
-    </div>
+                    <div id="update" class="modernnews-tab-content">
+                        <?php modernnews_do_settings_section('modernnews_theme_options', 'modernnews_theme_section_update'); ?>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -538,7 +462,7 @@ function modernnews_theme_options_page_html()
                 <p><?php echo esc_html__('Remember to save your changes after modifying settings.', 'modernnews'); ?></p>
             </div>
             <div class="save-bar-actions">
-                <button type="submit" form="modernnews-options-form" class="button button-primary button-large"><?php echo esc_html__('Save Theme Settings', 'modernnews'); ?></button>
+                <button type="submit" form="modernnews-theme-form" class="button button-primary button-large"><?php echo esc_html__('Save All Settings', 'modernnews'); ?></button>
             </div>
         </div>
     </div>

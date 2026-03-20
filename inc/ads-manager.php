@@ -11,247 +11,73 @@ function modernnews_ads_settings_init()
         return;
     }
 
-    register_setting('modernnews_ads', 'modernnews_ads_options');
+    // Consolidate into main theme options group
+    // register_setting('modernnews_ads', 'modernnews_ads_options'); // Removed to consolidate
 
     add_settings_section(
         'modernnews_ads_section_header',
         'Header Ad (728x90)',
         'modernnews_ads_section_header_cb',
-        'modernnews_ads'
+        'modernnews_theme_options'
     );
 
     add_settings_section(
         'modernnews_ads_section_sidebar',
         'Sidebar Ad (300x250 or Responsive)',
         'modernnews_ads_section_sidebar_cb',
-        'modernnews_ads'
+        'modernnews_theme_options'
     );
 
     add_settings_section(
         'modernnews_ads_section_single',
         'Single Post Ads',
         'modernnews_ads_section_single_cb',
-        'modernnews_ads'
+        'modernnews_theme_options'
     );
 
     add_settings_section(
         'modernnews_ads_section_sticky',
         'Sticky Mobile Footer',
         'modernnews_ads_section_sticky_cb',
-        'modernnews_ads'
+        'modernnews_theme_options'
     );
 
     // --- Header Fields ---
-    add_settings_field(
-        'header_ad_type',
-        'Ad Type',
-        'modernnews_ads_field_type_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_header',
-        ['label_for' => 'header_ad_type']
-    );
-    add_settings_field(
-        'header_ad_image',
-        'Image URL',
-        'modernnews_ads_field_image_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_header',
-        ['label_for' => 'header_ad_image']
-    );
-    add_settings_field(
-        'header_ad_link',
-        'Target URL',
-        'modernnews_ads_field_link_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_header',
-        ['label_for' => 'header_ad_link']
-    );
-    add_settings_field(
-        'header_ad_code',
-        'Custom Code (HTML/JS)',
-        'modernnews_ads_field_code_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_header',
-        ['label_for' => 'header_ad_code']
-    );
+    add_settings_field('header_ad_type', 'Ad Type', 'modernnews_ads_field_type_cb', 'modernnews_theme_options', 'modernnews_ads_section_header', ['label_for' => 'header_ad_type']);
+    add_settings_field('header_ad_image', 'Image URL', 'modernnews_ads_field_image_cb', 'modernnews_theme_options', 'modernnews_ads_section_header', ['label_for' => 'header_ad_image']);
+    add_settings_field('header_ad_link', 'Target URL', 'modernnews_ads_field_link_cb', 'modernnews_theme_options', 'modernnews_ads_section_header', ['label_for' => 'header_ad_link']);
+    add_settings_field('header_ad_code', 'Custom Code (HTML/JS)', 'modernnews_ads_field_code_cb', 'modernnews_theme_options', 'modernnews_ads_section_header', ['label_for' => 'header_ad_code']);
 
     // --- Sidebar Fields ---
-    add_settings_field(
-        'sidebar_ad_type',
-        'Ad Type',
-        'modernnews_ads_field_type_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_sidebar',
-        ['label_for' => 'sidebar_ad_type']
-    );
-    add_settings_field(
-        'sidebar_ad_image',
-        'Image URL',
-        'modernnews_ads_field_image_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_sidebar',
-        ['label_for' => 'sidebar_ad_image']
-    );
-    add_settings_field(
-        'sidebar_ad_link',
-        'Target URL',
-        'modernnews_ads_field_link_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_sidebar',
-        ['label_for' => 'sidebar_ad_link']
-    );
-    add_settings_field(
-        'sidebar_ad_code',
-        'Custom Code (HTML/JS)',
-        'modernnews_ads_field_code_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_sidebar',
-        ['label_for' => 'sidebar_ad_code']
-    );
+    add_settings_field('sidebar_ad_type', 'Ad Type', 'modernnews_ads_field_type_cb', 'modernnews_theme_options', 'modernnews_ads_section_sidebar', ['label_for' => 'sidebar_ad_type']);
+    add_settings_field('sidebar_ad_image', 'Image URL', 'modernnews_ads_field_image_cb', 'modernnews_theme_options', 'modernnews_ads_section_sidebar', ['label_for' => 'sidebar_ad_image']);
+    add_settings_field('sidebar_ad_link', 'Target URL', 'modernnews_ads_field_link_cb', 'modernnews_theme_options', 'modernnews_ads_section_sidebar', ['label_for' => 'sidebar_ad_link']);
+    add_settings_field('sidebar_ad_code', 'Custom Code (HTML/JS)', 'modernnews_ads_field_code_cb', 'modernnews_theme_options', 'modernnews_ads_section_sidebar', ['label_for' => 'sidebar_ad_code']);
 
     // --- Single Post Before Content Fields ---
-    add_settings_field(
-        'single_before_ad_type',
-        'Before Content: Ad Type',
-        'modernnews_ads_field_type_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_before_ad_type']
-    );
-    add_settings_field(
-        'single_before_ad_image',
-        'Before Content: Image',
-        'modernnews_ads_field_image_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_before_ad_image']
-    );
-    add_settings_field(
-        'single_before_ad_link',
-        'Before Content: Link',
-        'modernnews_ads_field_link_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_before_ad_link']
-    );
-    add_settings_field(
-        'single_before_ad_code',
-        'Before Content: Code',
-        'modernnews_ads_field_code_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_before_ad_code']
-    );
+    add_settings_field('single_before_ad_type', 'Before Content: Ad Type', 'modernnews_ads_field_type_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_before_ad_type']);
+    add_settings_field('single_before_ad_image', 'Before Content: Image', 'modernnews_ads_field_image_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_before_ad_image']);
+    add_settings_field('single_before_ad_link', 'Before Content: Link', 'modernnews_ads_field_link_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_before_ad_link']);
+    add_settings_field('single_before_ad_code', 'Before Content: Code', 'modernnews_ads_field_code_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_before_ad_code']);
 
     // --- Single Post In-Article Fields ---
-    add_settings_field(
-        'single_in_article_ad_paragraph',
-        'In-Article: Paragraph Position',
-        'modernnews_ads_field_number_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_in_article_ad_paragraph']
-    );
-    add_settings_field(
-        'single_in_article_ad_type',
-        'In-Article: Ad Type',
-        'modernnews_ads_field_type_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_in_article_ad_type']
-    );
-    add_settings_field(
-        'single_in_article_ad_image',
-        'In-Article: Image',
-        'modernnews_ads_field_image_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_in_article_ad_image']
-    );
-    add_settings_field(
-        'single_in_article_ad_link',
-        'In-Article: Link',
-        'modernnews_ads_field_link_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_in_article_ad_link']
-    );
-    add_settings_field(
-        'single_in_article_ad_code',
-        'In-Article: Code',
-        'modernnews_ads_field_code_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_in_article_ad_code']
-    );
+    add_settings_field('single_in_article_ad_paragraph', 'In-Article: Paragraph Position', 'modernnews_ads_field_number_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_in_article_ad_paragraph']);
+    add_settings_field('single_in_article_ad_type', 'In-Article: Ad Type', 'modernnews_ads_field_type_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_in_article_ad_type']);
+    add_settings_field('single_in_article_ad_image', 'In-Article: Image', 'modernnews_ads_field_image_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_in_article_ad_image']);
+    add_settings_field('single_in_article_ad_link', 'In-Article: Link', 'modernnews_ads_field_link_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_in_article_ad_link']);
+    add_settings_field('single_in_article_ad_code', 'In-Article: Code', 'modernnews_ads_field_code_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_in_article_ad_code']);
 
     // --- Single Post After Content Fields ---
-    add_settings_field(
-        'single_after_ad_type',
-        'After Content: Ad Type',
-        'modernnews_ads_field_type_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_after_ad_type']
-    );
-    add_settings_field(
-        'single_after_ad_image',
-        'After Content: Image',
-        'modernnews_ads_field_image_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_after_ad_image']
-    );
-    add_settings_field(
-        'single_after_ad_link',
-        'After Content: Link',
-        'modernnews_ads_field_link_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_after_ad_link']
-    );
-    add_settings_field(
-        'single_after_ad_code',
-        'After Content: Code',
-        'modernnews_ads_field_code_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_single',
-        ['label_for' => 'single_after_ad_code']
-    );
+    add_settings_field('single_after_ad_type', 'After Content: Ad Type', 'modernnews_ads_field_type_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_after_ad_type']);
+    add_settings_field('single_after_ad_image', 'After Content: Image', 'modernnews_ads_field_image_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_after_ad_image']);
+    add_settings_field('single_after_ad_link', 'After Content: Link', 'modernnews_ads_field_link_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_after_ad_link']);
+    add_settings_field('single_after_ad_code', 'After Content: Code', 'modernnews_ads_field_code_cb', 'modernnews_theme_options', 'modernnews_ads_section_single', ['label_for' => 'single_after_ad_code']);
 
     // --- Sticky Mobile Footer Fields ---
-    add_settings_field(
-        'sticky_footer_ad_type',
-        'Sticky Footer: Ad Type',
-        'modernnews_ads_field_type_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_sticky',
-        ['label_for' => 'sticky_footer_ad_type']
-    );
-    add_settings_field(
-        'sticky_footer_ad_image',
-        'Sticky Footer: Image',
-        'modernnews_ads_field_image_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_sticky',
-        ['label_for' => 'sticky_footer_ad_image']
-    );
-    add_settings_field(
-        'sticky_footer_ad_link',
-        'Sticky Footer: Link',
-        'modernnews_ads_field_link_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_sticky',
-        ['label_for' => 'sticky_footer_ad_link']
-    );
-    add_settings_field(
-        'sticky_footer_ad_code',
-        'Sticky Footer: Code',
-        'modernnews_ads_field_code_cb',
-        'modernnews_ads',
-        'modernnews_ads_section_sticky',
-        ['label_for' => 'sticky_footer_ad_code']
-    );
+    add_settings_field('sticky_footer_ad_type', 'Sticky Footer: Ad Type', 'modernnews_ads_field_type_cb', 'modernnews_theme_options', 'modernnews_ads_section_sticky', ['label_for' => 'sticky_footer_ad_type']);
+    add_settings_field('sticky_footer_ad_image', 'Sticky Footer: Image', 'modernnews_ads_field_image_cb', 'modernnews_theme_options', 'modernnews_ads_section_sticky', ['label_for' => 'sticky_footer_ad_image']);
+    add_settings_field('sticky_footer_ad_link', 'Sticky Footer: Link', 'modernnews_ads_field_link_cb', 'modernnews_theme_options', 'modernnews_ads_section_sticky', ['label_for' => 'sticky_footer_ad_link']);
+    add_settings_field('sticky_footer_ad_code', 'Sticky Footer: Code', 'modernnews_ads_field_code_cb', 'modernnews_theme_options', 'modernnews_ads_section_sticky', ['label_for' => 'sticky_footer_ad_code']);
 }
 add_action('admin_init', 'modernnews_ads_settings_init');
 
@@ -279,7 +105,11 @@ function modernnews_ads_field_type_cb($args)
     if (!function_exists('get_option')) {
         return;
     }
-    $options = get_option('modernnews_ads_options');
+    $options = get_option('modernnews_theme_options');
+    // Fallback to legacy field
+    if (empty($options)) {
+        $options = get_option('modernnews_ads_options');
+    }
     $val = isset($options[$args['label_for']]) ? $options[$args['label_for']] : 'image';
     ?>
     <select name="modernnews_ads_options[<?php echo esc_attr($args['label_for']); ?>]">
@@ -294,7 +124,11 @@ function modernnews_ads_field_image_cb($args)
     if (!function_exists('get_option')) {
         return;
     }
-    $options = get_option('modernnews_ads_options');
+    $options = get_option('modernnews_theme_options');
+    // Fallback to legacy field
+    if (empty($options)) {
+        $options = get_option('modernnews_ads_options');
+    }
     $val = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '';
     echo '<input type="text" name="modernnews_ads_options[' . esc_attr($args['label_for']) . ']" value="' . esc_attr($val) . '" class="regular-text code" placeholder="https://example.com/banner.jpg">';
 }
@@ -304,7 +138,11 @@ function modernnews_ads_field_link_cb($args)
     if (!function_exists('get_option')) {
         return;
     }
-    $options = get_option('modernnews_ads_options');
+    $options = get_option('modernnews_theme_options');
+    // Fallback to legacy field
+    if (empty($options)) {
+        $options = get_option('modernnews_ads_options');
+    }
     $val = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '';
     echo '<input type="text" name="modernnews_ads_options[' . esc_attr($args['label_for']) . ']" value="' . esc_attr($val) . '" class="regular-text code" placeholder="https://target-site.com">';
 }
@@ -314,7 +152,11 @@ function modernnews_ads_field_number_cb($args)
     if (!function_exists('get_option')) {
         return;
     }
-    $options = get_option('modernnews_ads_options');
+    $options = get_option('modernnews_theme_options');
+    // Fallback to legacy field
+    if (empty($options)) {
+        $options = get_option('modernnews_ads_options');
+    }
     $val = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '3';
     echo '<input type="number" name="modernnews_ads_options[' . esc_attr($args['label_for']) . ']" value="' . esc_attr($val) . '" class="small-text" min="1">';
     echo '<p class="description">Insert ad after this many paragraphs.</p>';
@@ -325,7 +167,11 @@ function modernnews_ads_field_code_cb($args)
     if (!function_exists('get_option')) {
         return;
     }
-    $options = get_option('modernnews_ads_options');
+    $options = get_option('modernnews_theme_options');
+    // Fallback to legacy field
+    if (empty($options)) {
+        $options = get_option('modernnews_ads_options');
+    }
     $val = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '';
     echo '<textarea name="modernnews_ads_options[' . esc_attr($args['label_for']) . ']" rows="5" cols="50" class="large-text code">' . esc_textarea($val) . '</textarea>';
 }

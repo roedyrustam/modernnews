@@ -25,41 +25,63 @@ jQuery(document).ready(function ($) {
     });
 
 
-    // 1. Get User Location
+    // --- Service Worker Registration ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register(modernnews_ajax.theme_url + '/assets/js/service-worker.js')
+                .then(registration => {
+                    console.log('Modern News SW registered:', registration.scope);
+                })
+                .catch(err => {
+                    console.warn('Modern News SW registration failed:', err);
+                });
+        });
+    }
+
+    // --- Weather Logic with Caching ---
     function getUserLocation() {
-        // Using ipapi.co for HTTPS support
+        // Check cache first
+        const cachedLocation = localStorage.getItem('modernnews_location');
+        const cacheTime = localStorage.getItem('modernnews_location_time');
+        const now = new Date().getTime();
+
+        if (cachedLocation && cacheTime && (now - cacheTime < 3600000)) { // 1 hour cache for location
+            const loc = JSON.parse(cachedLocation);
+            getWeather(loc.city);
+            getLocalNews(loc.city);
+            return;
+        }
+
         fetch('https://ipapi.co/json/')
             .then(response => response.json())
             .then(data => {
                 const city = data.city;
-                const region = data.region;
-                console.log('Detected Location:', city, region);
-
-                // Fetch Weather
+                localStorage.setItem('modernnews_location', JSON.stringify({ city: city }));
+                localStorage.setItem('modernnews_location_time', now);
+                
                 getWeather(city);
-
-                // Fetch Local News
                 getLocalNews(city);
             })
             .catch(error => {
                 console.error('Error fetching location:', error);
-
-                // Fallback for Weather
                 weatherWidget.html('<span class="weather-error">Weather unavailable</span>');
-
-                // Fallback for Local News (Default to Capital/National)
-                console.log('Falling back to default location: Jakarta');
                 getLocalNews('Jakarta');
             });
     }
 
-    // 2. Fetch Weather
     function getWeather(city) {
-        // Check if we have an API Key for OpenWeatherMap
         const apiKey = modernnews_ajax.weather_api_key;
+        const now = new Date().getTime();
+        const cachedWeather = localStorage.getItem('modernnews_weather_' + city);
+        const cacheTime = localStorage.getItem('modernnews_weather_time_' + city);
+
+        if (cachedWeather && cacheTime && (now - cacheTime < 1800000)) { // 30 mins cache
+            const data = JSON.parse(cachedWeather);
+            renderWeatherWidget(city, data.temp, data.icon);
+            return;
+        }
 
         if (apiKey) {
-            // Use OpenWeatherMap
             const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${apiKey}`;
 
             fetch(weatherUrl)
@@ -69,19 +91,11 @@ jQuery(document).ready(function ($) {
                 })
                 .then(data => {
                     const temp = Math.round(data.main.temp);
-                    // OWM icon mapping is different or we can use their icons directly
-                    // Simple manual mapping from OWM icon codes or basic conditions
-                    // data.weather[0].main / icon
-
                     const weatherMain = data.weather[0].main.toLowerCase();
-                    let icon = '☀️';
-                    if (weatherMain.includes('cloud')) icon = '☁️';
-                    if (weatherMain.includes('rain')) icon = '🌧️';
-                    if (weatherMain.includes('drizzle')) icon = '🌦️';
-                    if (weatherMain.includes('thunder')) icon = '⚡';
-                    if (weatherMain.includes('snow')) icon = '❄️';
-                    if (weatherMain.includes('clear')) icon = '☀️';
-                    if (weatherMain.includes('mist') || weatherMain.includes('fog')) icon = '🌫️';
+                    const icon = getRemixIcon(weatherMain);
+
+                    localStorage.setItem('modernnews_weather_' + city, JSON.stringify({ temp: temp, icon: icon }));
+                    localStorage.setItem('modernnews_weather_time_' + city, now);
 
                     renderWeatherWidget(city, temp, icon);
                 })
@@ -91,21 +105,32 @@ jQuery(document).ready(function ($) {
                 });
 
         } else {
-            // Fallback to Open-Meteo
             getWeatherOpenMeteo(city);
         }
     }
 
-    function renderWeatherWidget(city, temp, icon) {
-        // Link to AccuWeather search for the city (generic)
+    function getRemixIcon(condition) {
+        if (condition.includes('cloud')) return '<i class="ri-cloudy-line"></i>';
+        if (condition.includes('rain')) return '<i class="ri-rainy-line"></i>';
+        if (condition.includes('drizzle')) return '<i class="ri-drizzle-line"></i>';
+        if (condition.includes('thunder')) return '<i class="ri-thunderstorms-line"></i>';
+        if (condition.includes('snow')) return '<i class="ri-snowy-line"></i>';
+        if (condition.includes('clear')) return '<i class="ri-sun-line"></i>';
+        if (condition.includes('mist') || condition.includes('fog')) return '<i class="ri-mist-line"></i>';
+        return '<i class="ri-temp-hot-line"></i>';
+    }
+
+    function renderWeatherWidget(city, temp, iconHtml) {
         const accuLink = `https://www.accuweather.com/id/search-locations?query=${encodeURIComponent(city)}`;
 
         const html = `
             <a href="${accuLink}" target="_blank" rel="noopener" class="weather-link" style="text-decoration:none; display:flex; align-items:center; color:inherit;">
-                <div class="weather-info">
-                    <span class="weather-icon" style="font-size:1.2rem; margin-right:5px;">${icon}</span>
-                    <span class="weather-city">${city}</span>
-                    <span class="weather-temp">${temp}°C</span>
+                <div class="weather-info flex items-center bg-gray-50 dark:bg-zinc-800 px-3 py-1 rounded-full border border-gray-100 dark:border-zinc-700 h-9">
+                    <span class="weather-icon text-primary mr-2 flex items-center text-lg">${iconHtml}</span>
+                    <div class="flex flex-col leading-none">
+                        <span class="weather-city text-[10px] font-bold uppercase tracking-wider opacity-60">${city}</span>
+                        <span class="weather-temp text-xs font-black">${temp}°C</span>
+                    </div>
                 </div>
             </a>
         `;
@@ -113,13 +138,12 @@ jQuery(document).ready(function ($) {
     }
 
     function getWeatherOpenMeteo(city) {
+        // Reuse location logic or skip for brevity in open meteo fallback
         fetch('https://ipapi.co/json/')
             .then(res => res.json())
             .then(locData => {
                 const lat = locData.latitude;
                 const lon = locData.longitude;
-                // If city didn't match ipapi, this might be slightly off but good enough fallback
-
                 const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
 
                 fetch(weatherUrl)
@@ -127,32 +151,29 @@ jQuery(document).ready(function ($) {
                     .then(weatherData => {
                         const temp = Math.round(weatherData.current_weather.temperature);
                         const wcode = weatherData.current_weather.weathercode;
-                        const icon = getWeatherIcon(wcode);
+                        const icon = getRemixIconFromWMO(wcode);
+                        
+                        localStorage.setItem('modernnews_weather_' + city, JSON.stringify({ temp: temp, icon: icon }));
+                        localStorage.setItem('modernnews_weather_time_' + city, new Date().getTime());
+
                         renderWeatherWidget(city, temp, icon);
                     });
             });
     }
 
-    // Helper: Map WMO codes to Iocns
-    function getWeatherIcon(code) {
-        // WMO Weather interpretation codes (WW)
-        // 0: Clear sky
-        // 1, 2, 3: Mainly clear, partly cloudy, and overcast
-        // 45, 48: Fog and depositing rime fog
-        // 51, 53, 55: Drizzle: Light, moderate, and dense intensity
-        // 61, 63, 65: Rain: Light, moderate and heavy intensity
-        // 80, 81, 82: Rain showers: Slight, moderate, and violent
-        // 95, 96, 99: Thunderstorm: Slight or moderate
-
-        if (code === 0) return '☀️';
-        if (code >= 1 && code <= 3) return '⛅';
-        if (code >= 45 && code <= 48) return '🌫️';
-        if (code >= 51 && code <= 67) return '🌧️';
-        if (code >= 71 && code <= 77) return '❄️';
-        if (code >= 80 && code <= 82) return '🌦️';
-        if (code >= 95 && code <= 99) return '⚡';
-        return '🌡️';
+    function getRemixIconFromWMO(code) {
+        if (code === 0) return '<i class="ri-sun-line"></i>';
+        if (code >= 1 && code <= 3) return '<i class="ri-cloudy-2-line"></i>';
+        if (code >= 45 && code <= 48) return '<i class="ri-mist-line"></i>';
+        if (code >= 51 && code <= 67) return '<i class="ri-rainy-line"></i>';
+        if (code >= 71 && code <= 77) return '<i class="ri-snowy-line"></i>';
+        if (code >= 80 && code <= 82) return '<i class="ri-showers-line"></i>';
+        if (code >= 95 && code <= 99) return '<i class="ri-thunderstorms-line"></i>';
+        return '<i class="ri-temp-hot-line"></i>';
     }
+
+    // Init
+    getUserLocation();
 
     // 3. Fetch Local News via AJAX
     function getLocalNews(city) {
