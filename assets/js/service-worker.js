@@ -7,8 +7,9 @@ const CACHE_NAME = 'modernnews-v1';
 const ASSETS_TO_CACHE = [
     '/',
     '/wp-content/themes/modernnews/style.css',
+    '/wp-content/themes/modernnews/assets/css/main.css',
     '/wp-content/themes/modernnews/assets/js/main.js',
-    'https://cdn.tailwindcss.com?plugins=forms,container-queries',
+    '/wp-content/themes/modernnews/manifest.json',
     'https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css'
 ];
 

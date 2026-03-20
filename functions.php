@@ -139,17 +139,19 @@ function modernnews_scripts()
     wp_enqueue_style('modernnews-icons', 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap', array(), null);
     wp_enqueue_style('remix-icon', 'https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css', array(), '4.2.0');
 
+    $theme_version = wp_get_theme()->get('Version');
+
     // Main Stylesheet
-    wp_enqueue_style('modernnews-style', get_stylesheet_uri());
+    wp_enqueue_style('modernnews-style', get_stylesheet_uri(), array(), $theme_version);
 
     // Custom Main CSS
-    wp_enqueue_style('modernnews-main', get_template_directory_uri() . '/assets/css/main.css', array(), '1.0.0');
+    wp_enqueue_style('modernnews-main', get_template_directory_uri() . '/assets/css/main.css', array(), $theme_version);
 
     // Block Styles
-    wp_enqueue_style('modernnews-blocks', get_template_directory_uri() . '/assets/css/blocks.css', array(), '1.0.0');
+    wp_enqueue_style('modernnews-blocks', get_template_directory_uri() . '/assets/css/blocks.css', array(), $theme_version);
 
     // Main JS
-    wp_enqueue_script('modernnews-main-js', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.0', true);
+    wp_enqueue_script('modernnews-main-js', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), $theme_version, true);
 
     // Pass AJAX URL and Settings to script
     wp_localize_script('modernnews-main-js', 'modernnews_ajax', array(
@@ -461,3 +463,24 @@ function modernnews_handle_citizen_submission()
 }
 add_action('admin_post_submit_citizen_news', 'modernnews_handle_citizen_submission');
 add_action('admin_post_nopriv_submit_citizen_news', 'modernnews_handle_citizen_submission'); // Allow non-logged-in users
+
+// --- Phase 6: Performance & Image Optimization ---
+
+// 1. Set JPEG quality to 82 for better performance/quality ratio
+add_filter('jpeg_quality', function() { return 82; });
+
+// 2. Allow WebP upload support
+add_filter('upload_mimes', function($mimes) {
+    if (!isset($mimes['webp'])) {
+        $mimes['webp'] = 'image/webp';
+    }
+    return $mimes;
+});
+
+// 3. Ensure WebP is checked for MIME type validation
+add_filter('file_is_displayable_image', function($result, $path) {
+    if ($result === false && strpos($path, '.webp') !== false) {
+        $result = true;
+    }
+    return $result;
+}, 10, 2);
