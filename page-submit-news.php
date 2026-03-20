@@ -12,27 +12,39 @@
     <title>Citizen News Submission Form |
         <?php bloginfo('name'); ?>
     </title>
+    <!-- Performance Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+
+    <!-- Tailwind Configuration -->
     <script id="tailwind-config">
+        <?php
+        $primary_color = '#168098';
+        $heading_font = 'Epilogue';
+        $body_font = 'Noto Sans';
+
+        if (function_exists('modernnews_get_option')) {
+            $primary_color = modernnews_get_option('primary_color', '#168098');
+            $heading_font = modernnews_get_option('heading_font', 'Epilogue');
+            $body_font = modernnews_get_option('body_font', 'Noto Sans');
+        }
+        ?>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#1f8093",
+                        "primary": "<?php echo esc_js($primary_color); ?>",
                         "background-light": "#fafafa",
                         "background-dark": "#171b1c",
                         "muted-coral": "#e57373"
                     },
                     fontFamily: {
-                        "display": ["Manrope", "sans-serif"]
+                        "display": ["var(--font-heading)", "sans-serif"],
+                        "body": ["var(--font-body)", "sans-serif"]
                     },
                     borderRadius: {
                         "DEFAULT": "0.5rem",
@@ -44,15 +56,25 @@
             },
         }
     </script>
-    <style>
-        body {
-            font-family: 'Manrope', sans-serif;
-        }
 
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --color-primary: <?php echo esc_html($primary_color); ?>;
+            --font-heading: '<?php echo esc_html($heading_font); ?>', sans-serif;
+            --font-body: '<?php echo esc_html($body_font); ?>', sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+        }
         .form-card-shadow {
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
         }
-
         .glass-effect {
             backdrop-filter: blur(8px);
             background: rgba(255, 255, 255, 0.8);
@@ -90,7 +112,7 @@
                 <form action="<?php echo home_url('/'); ?>" method="get"
                     class="hidden lg:flex items-stretch min-w-[240px] h-10 rounded-xl bg-[#e9f0f2] dark:bg-gray-800 overflow-hidden">
                     <div class="flex items-center justify-center pl-4">
-                        <span class="material-symbols-outlined text-[#558791] text-xl">search</span>
+                        <i class="ri-search-line text-[#558791] text-xl"></i>
                     </div>
                     <input name="s"
                         class="w-full bg-transparent border-none focus:ring-0 text-sm placeholder:text-[#558791]"
@@ -121,7 +143,7 @@
             <?php
             if (isset($_GET['submission']) && $_GET['submission'] == 'success') {
                 echo '<div class="mb-6 p-4 bg-green-100 border border-green-200 text-green-700 rounded-xl flex items-center gap-3">
-                    <span class="material-symbols-outlined">check_circle</span>
+                    <i class="ri-checkbox-circle-line text-xl"></i>
                     <strong>Terima kasih!</strong> Laporan Anda berhasil dikirim dan sedang ditinjau oleh redaksi.
                 </div>';
             }
@@ -139,7 +161,7 @@
                 </div>
                 <button
                     class="h-11 px-6 bg-[#e9f0f2] dark:bg-gray-800 text-[#0f181a] dark:text-white rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <span class="material-symbols-outlined text-lg">menu_book</span>
+                    <i class="ri-book-open-line text-lg"></i>
                     Editorial Guidelines
                 </button>
             </div>
@@ -148,7 +170,7 @@
                 class="bg-white dark:bg-gray-900 rounded-xl p-5 form-card-shadow border border-gray-100 dark:border-gray-800">
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-sm font-bold text-primary flex items-center gap-2">
-                        <span class="material-symbols-outlined text-lg">edit_note</span>
+                    <span class="ri-edit-box-line text-lg text-primary mr-2"></span>
                         Submission Progress
                     </span>
                     <span class="text-sm font-bold text-[#0f181a] dark:text-white">40% Complete</span>
@@ -172,7 +194,7 @@
                 class="bg-white dark:bg-gray-900 rounded-2xl p-8 form-card-shadow border border-gray-100 dark:border-gray-800">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="size-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined">add_a_photo</span>
+                        <i class="ri-image-add-line text-xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold dark:text-white">1. Evidence &amp; Visuals</h3>
                 </div>
@@ -182,7 +204,7 @@
                         accept="image/*,video/*">
                     <div
                         class="size-16 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined text-4xl">cloud_upload</span>
+                        <i class="ri-upload-cloud-2-line text-4xl"></i>
                     </div>
                     <div class="text-center max-w-md">
                         <p class="text-lg font-bold dark:text-white mb-2">Drag and drop photos or videos</p>
@@ -204,7 +226,7 @@
                 class="bg-white dark:bg-gray-900 rounded-2xl p-8 form-card-shadow border border-gray-100 dark:border-gray-800">
                 <div class="flex items-center gap-3 mb-8">
                     <div class="size-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined">description</span>
+                        <i class="ri-file-text-line text-xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold dark:text-white">2. The Narrative</h3>
                 </div>
@@ -229,11 +251,17 @@
                         <div class="flex flex-wrap gap-3">
                             <select name="news_category"
                                 class="w-full h-12 bg-background-light dark:bg-background-dark border-none focus:ring-2 focus:ring-primary rounded-xl px-4 text-sm font-bold text-[#558791]">
-                                <option value="Traffic">Traffic</option>
-                                <option value="Weather">Weather</option>
-                                <option value="Environment">Environment</option>
-                                <option value="Public Service">Public Service</option>
-                                <option value="Community Event">Community Event</option>
+                                <?php
+                                $categories = get_categories(array('hide_empty' => 0));
+                                $default_cat_id = 0;
+                                if (function_exists('modernnews_get_option')) {
+                                    $default_cat_id = modernnews_get_option('citizen_news_category_id', 0);
+                                }
+                                foreach ($categories as $category) {
+                                    $selected = ($category->term_id == $default_cat_id) ? 'selected' : '';
+                                    echo '<option value="' . esc_attr($category->term_id) . '" ' . $selected . '>' . esc_html($category->name) . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -255,7 +283,7 @@
                 class="bg-white dark:bg-gray-900 rounded-2xl p-8 form-card-shadow border border-gray-100 dark:border-gray-800">
                 <div class="flex items-center gap-3 mb-8">
                     <div class="size-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined">location_on</span>
+                        <i class="ri-map-pin-2-line text-xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold dark:text-white">3. Geo-Targeting</h3>
                 </div>
@@ -266,8 +294,7 @@
                                 class="text-sm font-extrabold text-[#0f181a] dark:text-white uppercase tracking-wider">Search
                                 Location</label>
                             <div class="relative">
-                                <span
-                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">search</span>
+                                <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-primary"></i>
                                 <input name="news_location"
                                     class="w-full h-12 pl-12 bg-background-light dark:bg-background-dark border-none focus:ring-2 focus:ring-primary rounded-xl text-sm dark:text-white"
                                     placeholder="e.g. Sudirman, Jakarta Pusat" type="text" />
@@ -275,7 +302,7 @@
                         </div>
                         <div class="p-5 bg-primary/5 rounded-xl border border-primary/10">
                             <div class="flex gap-4">
-                                <span class="material-symbols-outlined text-primary">info</span>
+                                <i class="ri-information-line text-primary text-xl"></i>
                                 <p class="text-sm text-primary/80 leading-relaxed font-medium">
                                     Tagging the precise location helps us notify local authorities and residents in the
                                     affected area faster.
@@ -291,8 +318,7 @@
                                 style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD0jzVq61OOKRteLkjGHBvVuG9cDKwLJ_zPsmCcI0JCunRv_l_NwnKPT1zzJuLO6qRuwZmrCG7Zo_m2Z4JK2tIs8x1Ny08_z6pLuHpYQnGEEA4p8SBjMW2e6qmrVfGluP7eytSCeAgIWktfa8XyGyKTZqT72yQUveiXCcIqSE7rfQwUIoqIQQBg2H9WimNpwHSCIL5VgONNlzZjVaDehkI80LXhN9QeOpQBbFroxCpL2RMF266U-SBHmwQZpjn9tNBIul291LW0IA4'); opacity: 0.6; filter: grayscale(100%);">
                             </div>
                             <div class="relative z-10 flex flex-col items-center">
-                                <span
-                                    class="material-symbols-outlined text-muted-coral text-5xl drop-shadow-lg">location_on</span>
+                                <i class="ri-map-pin-2-fill text-muted-coral text-5xl drop-shadow-lg"></i>
                                 <div
                                     class="mt-2 px-4 py-1 bg-white dark:bg-gray-900 rounded-full shadow-lg text-xs font-bold dark:text-white">
                                     Set News Location
@@ -308,7 +334,7 @@
                 class="bg-white dark:bg-gray-900 rounded-2xl p-8 form-card-shadow border border-gray-100 dark:border-gray-800">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="size-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined">tag</span>
+                        <i class="ri-hashtag text-xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold dark:text-white">4. Discovery Tags</h3>
                 </div>
@@ -366,12 +392,9 @@
                 <?php echo date('Y'); ?> WartaWarga News Indonesia. Empowering Citizen Voice.
             </p>
             <div class="flex gap-6">
-                <a class="text-[#558791] hover:text-primary" href="#"><span
-                        class="material-symbols-outlined">language</span></a>
-                <a class="text-[#558791] hover:text-primary" href="#"><span
-                        class="material-symbols-outlined">share</span></a>
-                <a class="text-[#558791] hover:text-primary" href="#"><span
-                        class="material-symbols-outlined">help</span></a>
+                <a class="text-[#558791] hover:text-primary" href="#"><i class="ri-global-line"></i></a>
+                <a class="text-[#558791] hover:text-primary" href="#"><i class="ri-share-line"></i></a>
+                <a class="text-[#558791] hover:text-primary" href="#"><i class="ri-question-line"></i></a>
             </div>
         </div>
     </footer>

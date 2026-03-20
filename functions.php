@@ -394,7 +394,7 @@ function modernnews_handle_citizen_submission()
     // 2. Sanitize Input
     $title = sanitize_text_field($_POST['news_title']);
     $content = sanitize_textarea_field($_POST['news_content']);
-    $category_name = sanitize_text_field($_POST['news_category']);
+    $category_input = sanitize_text_field($_POST['news_category']);
     $location = sanitize_text_field($_POST['news_location']);
     $tags = sanitize_text_field($_POST['news_tags']);
     $anonymous = isset($_POST['post_anonymous']);
@@ -412,10 +412,14 @@ function modernnews_handle_citizen_submission()
     $post_id = wp_insert_post($post_data);
 
     if ($post_id) {
-        // Set Category
-        $cat = get_term_by('name', $category_name, 'category');
-        if ($cat) {
-            wp_set_post_categories($post_id, array($cat->term_id));
+        // Set Category (from ID or name)
+        if (is_numeric($category_input)) {
+            wp_set_post_categories($post_id, array((int)$category_input));
+        } else {
+            $cat = get_term_by('name', $category_input, 'category');
+            if ($cat) {
+                wp_set_post_categories($post_id, array($cat->term_id));
+            }
         }
 
         // Set Tags

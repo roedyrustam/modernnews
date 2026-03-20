@@ -35,6 +35,7 @@ function modernnews_theme_settings_init()
     add_settings_field('live_streaming_url', 'Live Streaming Page URL', 'modernnews_theme_field_text_cb', 'modernnews_theme_options', 'modernnews_theme_section_features', ['label_for' => 'live_streaming_url']);
     add_settings_field('enable_citizen_news', 'Enable Citizen News Button', 'modernnews_theme_field_checkbox_cb', 'modernnews_theme_options', 'modernnews_theme_section_features', ['label_for' => 'enable_citizen_news']);
     add_settings_field('citizen_news_url', 'Citizen News Page URL', 'modernnews_theme_field_text_cb', 'modernnews_theme_options', 'modernnews_theme_section_features', ['label_for' => 'citizen_news_url']);
+    add_settings_field('citizen_news_category_id', 'Citizen News Default Category', 'modernnews_theme_field_category_cb', 'modernnews_theme_options', 'modernnews_theme_section_features', ['label_for' => 'citizen_news_category_id']);
     add_settings_field('subscribe_url', 'Subscribe Button URL', 'modernnews_theme_field_text_cb', 'modernnews_theme_options', 'modernnews_theme_section_features', ['label_for' => 'subscribe_url']);
 
     // --- Section: Social Media ---

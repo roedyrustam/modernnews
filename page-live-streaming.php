@@ -17,45 +17,61 @@ $recommended_query = new WP_Query(array(
 ));
 
 ?><!DOCTYPE html>
-<html class="dark" <?php language_attributes(); ?>>
+    <!-- Performance Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Live Streaming -
-        <?php bloginfo('name'); ?>
-    </title>
+    <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+
+    <!-- Tailwind Configuration -->
     <script id="tailwind-config">
+        <?php
+        $primary_color = '#1481b8';
+        $heading_font = 'Epilogue';
+        $body_font = 'Noto Sans';
+
+        if (function_exists('modernnews_get_option')) {
+            $primary_color = modernnews_get_option('primary_color', '#1481b8');
+            $heading_font = modernnews_get_option('heading_font', 'Epilogue');
+            $body_font = modernnews_get_option('body_font', 'Noto Sans');
+        }
+        ?>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#1481b8",
+                        "primary": "<?php echo esc_js($primary_color); ?>",
                         "background-light": "#f1f2f4",
                         "background-dark": "#121416",
                         "surface-dark": "#1c1f23",
                         "border-dark": "#2d3439",
                     },
                     fontFamily: {
-                        "display": ["Space Grotesk"]
+                        "display": ["var(--font-heading)", "sans-serif"],
+                        "body": ["var(--font-body)", "sans-serif"]
                     },
                     borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
                 },
             },
         }
     </script>
+
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
     <style>
+        :root {
+            --color-primary: <?php echo esc_html($primary_color); ?>;
+            --font-heading: '<?php echo esc_html($heading_font); ?>', sans-serif;
+            --font-body: '<?php echo esc_html($body_font); ?>', sans-serif;
+        }
         body {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: var(--font-body);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
         }
 
         .ticker-scroll {
@@ -98,8 +114,8 @@ $recommended_query = new WP_Query(array(
             <div class="flex items-center gap-10">
                 <a href="<?php echo home_url(); ?>" class="flex items-center gap-3 decoration-0">
                     <div
-                        class="size-8 bg-primary rounded-lg flex items-center justify-center text-white shadow-[0_0_15px_rgba(20,129,184,0.4)]">
-                        <span class="material-symbols-outlined text-2xl">broadcast_on_home</span>
+                        class="size-8 bg-primary rounded-lg flex items-center justify-center text-white shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)]">
+                        <i class="ri-broadcast-line text-xl"></i>
                     </div>
                     <h1 class="text-xl font-bold tracking-tight text-white uppercase italic">News<span
                             class="text-primary">Hub</span></h1>
@@ -116,14 +132,13 @@ $recommended_query = new WP_Query(array(
             <div class="flex items-center gap-4 flex-1 justify-end">
                 <form action="<?php echo home_url('/'); ?>" method="get"
                     class="relative w-full max-w-md hidden md:block">
-                    <span
-                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                    <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     <input name="s"
                         class="w-full bg-surface-dark border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary text-white"
                         placeholder="Search news, topics, or events..." type="text" />
                 </form>
                 <div class="flex items-center gap-2 bg-surface-dark px-3 py-2 rounded-lg border border-border-dark">
-                    <span class="material-symbols-outlined text-primary text-lg">location_on</span>
+                    <i class="ri-map-pin-line text-primary"></i>
                     <span class="text-xs font-bold uppercase tracking-wider text-white">Jakarta, ID</span>
                 </div>
                 <?php if (is_user_logged_in()): ?>
@@ -185,7 +200,7 @@ $recommended_query = new WP_Query(array(
                     </a>
                     <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors text-slate-300"
                         href="#">
-                        <span class="material-symbols-outlined">history</span> Archives
+                        <i class="ri-history-line"></i> Archives
                     </a>
                 </nav>
             </div>
@@ -298,7 +313,7 @@ $recommended_query = new WP_Query(array(
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-bold text-white">Recommended for You</h3>
                     <a class="text-primary text-sm font-bold flex items-center gap-1 hover:underline" href="#">View All
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                        <i class="ri-arrow-right-line text-sm"></i></a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <?php while ($recommended_query->have_posts()):
@@ -338,7 +353,7 @@ $recommended_query = new WP_Query(array(
             <div class="bg-surface-dark border border-border-dark rounded-xl flex flex-col h-[500px] shadow-xl">
                 <div class="p-4 border-b border-border-dark flex items-center justify-between">
                     <h3 class="font-bold flex items-center gap-2 text-white">
-                        <span class="material-symbols-outlined text-primary">chat_bubble</span> Live Chat
+                        <i class="ri-chat-3-line text-primary"></i> Live Chat
                     </h3>
                     <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Moderated</span>
                 </div>

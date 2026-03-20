@@ -69,13 +69,48 @@ if (!function_exists('modernnews_cleanup_head')) {
 // 3. Disable XML-RPC (Security & Performance)
 add_filter('xmlrpc_enabled', '__return_false');
 
-// 4. Remove jQuery Migrate (Optional - only if not needed by plugins)
-// function modernnews_remove_jquery_migrate($scripts) {
-//     if (!is_admin() && isset($scripts->registered['jquery'])) {
-//         $script = $scripts->registered['jquery'];
-//         if ($script->deps) { // Check for dependencies
-//             $script->deps = array_diff($script->deps, array('jquery-migrate'));
-//         }
-//     }
-// }
-// add_action('wp_default_scripts', 'modernnews_remove_jquery_migrate');
+// 4. Optimize Image Loading for LCP
+if (!function_exists('modernnews_optimize_lcp_images')) {
+    function modernnews_optimize_lcp_images($attr, $attachment, $size)
+    {
+        if (is_singular() || is_front_page()) {
+            global $wp_query;
+            // If it's the first image in the loop or the main featured image
+            if ($wp_query->current_post <= 0) {
+                $attr['fetchpriority'] = 'high';
+                $attr['loading'] = 'eager';
+            }
+        }
+        return $attr;
+    }
+    // High priority to ensure it runs late
+    add_filter('wp_get_attachment_image_attributes', 'modernnews_optimize_lcp_images', 10, 3);
+}
+
+// 5. Add Resource Hints (Preconnect)
+if (!function_exists('modernnews_resource_hints')) {
+    function modernnews_resource_hints($urls, $relation_type)
+    {
+        if ('preconnect' === $relation_type) {
+            $urls[] = array('href' => 'https://fonts.googleapis.com', 'crossorigin');
+            $urls[] = array('href' => 'https://fonts.gstatic.com', 'crossorigin');
+            $urls[] = array('href' => 'https://cdn.jsdelivr.net', 'crossorigin');
+        }
+        return $urls;
+    }
+    add_filter('wp_resource_hints', 'modernnews_resource_hints', 10, 2);
+}
+
+// 6. Remove jQuery Migrate (Optional - only if not needed by plugins)
+if (!function_exists('modernnews_remove_jquery_migrate')) {
+    function modernnews_remove_jquery_migrate($scripts)
+    {
+        if (!is_admin() && isset($scripts->registered['jquery'])) {
+            $script = $scripts->registered['jquery'];
+            if ($script->deps) { // Check for dependencies
+                $script->deps = array_diff($script->deps, array('jquery-migrate'));
+            }
+        }
+    }
+    add_action('wp_default_scripts', 'modernnews_remove_jquery_migrate');
+}
