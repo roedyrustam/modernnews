@@ -98,10 +98,16 @@ class ModernNews_Trending_Widget extends WP_Widget
         echo apply_filters('widget_title', $title);
         echo $args['after_title'];
 
+        // Fallback to global trending category if none set in widget
+        if (empty($category) && function_exists('modernnews_get_option')) {
+            $category = modernnews_get_option('trending_category_id');
+        }
+
         $trending_query = new WP_Query(array(
             'posts_per_page' => $count,
             'orderby' => 'comment_count',
             'order' => 'DESC',
+            'cat' => $category,
             'ignore_sticky_posts' => 1
         ));
 
@@ -391,13 +397,22 @@ class ModernNews_Newsletter_Widget extends WP_Widget
                 </div>
                 <h3 class="text-2xl font-black leading-tight mb-3">Newsletter <span class="text-primary italic">Eksklusif</span></h3>
                 <p class="text-gray-400 text-sm mb-6 leading-relaxed">Dapatkan wawasan berita terdalam langsung ke inbox Anda setiap pagi.</p>
-                <form class="space-y-3">
+                <?php 
+                $sub_url = function_exists('modernnews_get_option') ? modernnews_get_option('subscribe_url', '#') : '#';
+                ?>
+                <form class="space-y-3" action="<?php echo esc_url($sub_url); ?>" method="get">
                     <div class="relative">
-                        <input type="email" placeholder="Alamat email Anda" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-sm focus:ring-2 focus:ring-primary outline-none transition-all" required>
+                        <input type="email" name="email" placeholder="Alamat email Anda" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-sm focus:ring-2 focus:ring-primary outline-none transition-all" required>
                     </div>
-                    <button type="submit" class="w-full bg-white text-black font-black py-4 rounded-2xl hover:bg-primary hover:text-white transition-all transform hover:scale-[1.02] active:scale-95 text-xs uppercase tracking-widest">
-                        Ikuti Sekarang
-                    </button>
+                    <?php if ($sub_url !== '#'): ?>
+                        <a href="<?php echo esc_url($sub_url); ?>" class="block w-full text-center bg-white text-black font-black py-4 rounded-2xl hover:bg-primary hover:text-white transition-all transform hover:scale-[1.02] active:scale-95 text-xs uppercase tracking-widest">
+                            Ikuti Sekarang
+                        </a>
+                    <?php else: ?>
+                        <button type="submit" class="w-full bg-white text-black font-black py-4 rounded-2xl hover:bg-primary hover:text-white transition-all transform hover:scale-[1.02] active:scale-95 text-xs uppercase tracking-widest">
+                            Ikuti Sekarang
+                        </button>
+                    <?php endif; ?>
                 </form>
                 <p class="text-[10px] text-gray-500 mt-4 text-center">Privasi Anda terjaga. Berhenti berlangganan kapan saja.</p>
             </div>
@@ -431,26 +446,25 @@ class ModernNews_Social_Follow_Widget extends WP_Widget
         }
         ?>
         <div class="grid grid-cols-2 gap-3">
-            <a href="#" class="flex flex-col gap-1 p-4 bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 hover:border-primary hover:shadow-xl transition-all group">
-                <i class="ri-facebook-box-fill text-2xl text-[#1877F2]"></i>
-                <span class="text-xs font-black">2.4M</span>
-                <span class="text-[9px] text-gray-400 uppercase font-bold">Followers</span>
-            </a>
-            <a href="#" class="flex flex-col gap-1 p-4 bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 hover:border-primary hover:shadow-xl transition-all group">
-                <i class="ri-twitter-x-fill text-2xl text-black dark:text-white"></i>
-                <span class="text-xs font-black">850K</span>
-                <span class="text-[9px] text-gray-400 uppercase font-bold">Followers</span>
-            </a>
-            <a href="#" class="flex flex-col gap-1 p-4 bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 hover:border-primary hover:shadow-xl transition-all group">
-                <i class="ri-instagram-line text-2xl text-[#E4405F]"></i>
-                <span class="text-xs font-black">1.2M</span>
-                <span class="text-[9px] text-gray-400 uppercase font-bold">Followers</span>
-            </a>
-            <a href="#" class="flex flex-col gap-1 p-4 bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 hover:border-primary hover:shadow-xl transition-all group">
-                <i class="ri-youtube-fill text-2xl text-[#FF0000]"></i>
-                <span class="text-xs font-black">500K</span>
-                <span class="text-[9px] text-gray-400 uppercase font-bold">Subscribers</span>
-            </a>
+            <?php
+            $social_platforms = array(
+                'facebook'  => array('icon' => 'ri-facebook-box-fill', 'color' => '#1877F2', 'label' => 'Fans'),
+                'twitter'   => array('icon' => 'ri-twitter-x-fill', 'color' => 'black', 'label' => 'Followers', 'dark_color' => 'white'),
+                'instagram' => array('icon' => 'ri-instagram-line', 'color' => '#E4405F', 'label' => 'Followers'),
+                'youtube'   => array('icon' => 'ri-youtube-fill', 'color' => '#FF0000', 'label' => 'Subscribers'),
+                'tiktok'    => array('icon' => 'ri-tiktok-fill', 'color' => '#000000', 'label' => 'Followers', 'dark_color' => 'white')
+            );
+
+            foreach ($social_platforms as $key => $data):
+                $url = function_exists('modernnews_get_option') ? modernnews_get_option('social_' . $key) : '';
+                if (empty($url)) continue;
+                ?>
+                <a href="<?php echo esc_url($url); ?>" target="_blank" class="flex flex-col gap-1 p-4 bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 hover:border-primary hover:shadow-xl transition-all group">
+                    <i class="<?php echo esc_attr($data['icon']); ?> text-2xl" style="color: <?php echo esc_attr($data['color']); ?>;"></i>
+                    <span class="text-xs font-black"><?php echo ('youtube' === $key) ? 'Sub' : 'Follow'; ?></span>
+                    <span class="text-[9px] text-gray-400 uppercase font-bold"><?php echo esc_html(ucfirst($key)); ?></span>
+                </a>
+            <?php endforeach; ?>
         </div>
         <?php
         echo $args['after_widget'];
