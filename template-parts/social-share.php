@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Part: Social Share Buttons
+ * Template Part: Social Share Buttons (Horizontal Bar)
  */
 
 // Get current URL and Title
@@ -15,44 +15,42 @@ $linkedin_url = "https://www.linkedin.com/shareArticle?mini=true&url={$post_url}
 
 ?>
 
-<!-- Desktop: Floating Left -->
-<div class="social-share-desktop hidden xl:flex fixed left-8 top-1/2 -translate-y-1/2 flex-col gap-3 z-40">
-    <a href="<?php echo $facebook_url; ?>" target="_blank" rel="noopener noreferrer"
-        class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white hover:scale-110 transition-transform shadow-md"
-        title="Share on Facebook">
-        <i class="ri-facebook-fill text-lg"></i>
-    </a>
-    <a href="<?php echo $twitter_url; ?>" target="_blank" rel="noopener noreferrer"
-        class="w-10 h-10 flex items-center justify-center rounded-full bg-black text-white hover:scale-110 transition-transform shadow-md"
-        title="Share on X">
-        <i class="ri-twitter-x-fill text-lg"></i>
-    </a>
-    <a href="<?php echo $whatsapp_url; ?>" target="_blank" rel="noopener noreferrer"
-        class="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white hover:scale-110 transition-transform shadow-md"
-        title="Share on WhatsApp">
-        <i class="ri-whatsapp-line text-lg"></i>
-    </a>
-    <a href="<?php echo $linkedin_url; ?>" target="_blank" rel="noopener noreferrer"
-        class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-700 text-white hover:scale-110 transition-transform shadow-md"
-        title="Share on LinkedIn">
-        <i class="ri-linkedin-fill text-lg"></i>
-    </a>
-</div>
+<div class="social-share-container my-10 py-6 border-y border-gray-100 dark:border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-3">
+        <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <i class="ri-share-forward-line text-xl"></i>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm dark:text-white">Bagikan Berita Ini</h4>
+            <p class="text-xs text-gray-500">Bantu sebarkan informasi bermanfaat</p>
+        </div>
+    </div>
 
-<!-- Mobile: Fixed Bottom (Above current bottom nav if exists, or just minimal) -->
-<div
-    class="social-share-mobile xl:hidden w-full py-3 flex justify-center gap-4 bg-white dark:bg-zinc-900 border-t border-gray-100 dark:border-zinc-800">
-    <span class="text-xs font-bold uppercase tracking-wider text-gray-400 self-center mr-2">Bagikan</span>
-    <a href="<?php echo $facebook_url; ?>" target="_blank" rel="noopener noreferrer"
-        class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
-        <i class="ri-facebook-fill"></i>
-    </a>
-    <a href="<?php echo $twitter_url; ?>" target="_blank" rel="noopener noreferrer"
-        class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-black hover:bg-black hover:text-white transition-colors">
-        <i class="ri-twitter-x-fill"></i>
-    </a>
-    <a href="<?php echo $whatsapp_url; ?>" target="_blank" rel="noopener noreferrer"
-        class="w-8 h-8 flex items-center justify-center rounded-full bg-green-100 text-green-600 hover:bg-green-600 hover:text-white transition-colors">
-        <i class="ri-whatsapp-line"></i>
-    </a>
+    <div class="flex items-center gap-3">
+        <a href="<?php echo $facebook_url; ?>" target="_blank" rel="noopener noreferrer"
+            class="size-11 flex items-center justify-center rounded-xl bg-[#1877F2] text-white hover:scale-110 transition-transform shadow-sm"
+            title="Share on Facebook">
+            <i class="ri-facebook-fill text-xl"></i>
+        </a>
+        <a href="<?php echo $twitter_url; ?>" target="_blank" rel="noopener noreferrer"
+            class="size-11 flex items-center justify-center rounded-xl bg-black text-white hover:scale-110 transition-transform shadow-sm"
+            title="Share on X">
+            <i class="ri-twitter-x-fill text-xl"></i>
+        </a>
+        <a href="<?php echo $whatsapp_url; ?>" target="_blank" rel="noopener noreferrer"
+            class="size-11 flex items-center justify-center rounded-xl bg-[#25D366] text-white hover:scale-110 transition-transform shadow-sm"
+            title="Share on WhatsApp">
+            <i class="ri-whatsapp-line text-xl"></i>
+        </a>
+        <a href="<?php echo $linkedin_url; ?>" target="_blank" rel="noopener noreferrer"
+            class="size-11 flex items-center justify-center rounded-xl bg-[#0A66C2] text-white hover:scale-110 transition-transform shadow-sm"
+            title="Share on LinkedIn">
+            <i class="ri-linkedin-fill text-xl"></i>
+        </a>
+        <button onclick="navigator.clipboard.writeText('<?php echo get_permalink(); ?>').then(() => alert('Link berhasil disalin!'))"
+            class="size-11 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:bg-primary hover:text-white transition-all shadow-sm"
+            title="Copy Link">
+            <i class="ri-link text-xl"></i>
+        </button>
+    </div>
 </div>
