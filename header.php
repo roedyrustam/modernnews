@@ -43,51 +43,6 @@
         })();
     </script>
 
-    <!-- Tailwind CSS (CDN for development as requested) -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-    <!-- Tailwind Configuration -->
-    <!-- Tailwind Configuration -->
-    <script id="tailwind-config">
-        <?php
-        // Fetch Dynamic Styles
-        $primary_color = '#168098'; // Default
-        $heading_font = 'Epilogue';
-        $body_font = 'Noto Sans';
-
-        if (function_exists('modernnews_get_option')) {
-            $primary_color = modernnews_get_option('primary_color', '#168098');
-            $heading_font = modernnews_get_option('heading_font', 'Epilogue');
-            $body_font = modernnews_get_option('body_font', 'Noto Sans');
-        }
-        ?>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "var(--color-primary)",
-                        "secondary": "var(--color-secondary)",
-                        "background-light": "var(--bg-light)",
-                        "background-dark": "var(--bg-dark)",
-                        "accent-yellow": "#FFD600",
-                    },
-                    fontFamily: {
-                        "display": ["var(--font-heading)", "sans-serif"],
-                        "body": ["var(--font-body)", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "var(--radius-md)",
-                        "lg": "calc(var(--radius-md) * 1.25)",
-                        "xl": "calc(var(--radius-md) * 1.75)",
-                        "2xl": "calc(var(--radius-md) * 2.5)",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
-
     <!-- Fonts handled by functions.php -->
 
     <style>

@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Base Styles */
+@layer base {
+  body {
+    @apply font-body text-zinc-900 dark:text-zinc-100 antialiased selection:bg-primary selection:text-white;
+  }
+}

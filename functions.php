@@ -159,23 +159,15 @@ function modernnews_scripts()
         'theme_url' => get_template_directory_uri()
     ));
 
-    // Inline Custom Styles from Customizer (Live Preview)
-    $primary_color = get_theme_mod('modernnews_primary_color', '#3b82f6');
-    $secondary_color = get_theme_mod('modernnews_secondary_color', '#1e293b');
-    $header_bg = get_theme_mod('modernnews_header_bg', '#ffffff');
-    $body_bg = get_theme_mod('modernnews_body_bg', '#f3f4f6');
-    $heading_font = get_theme_mod('modernnews_heading_font', 'Epilogue');
-    $body_font = get_theme_mod('modernnews_body_font', 'Noto Sans');
-    $border_radius = get_theme_mod('modernnews_border_radius', '0.4');
-    $site_width = get_theme_mod('modernnews_site_width', '1280');
-
-    // Dynamic Font Loading
-    $fonts_to_load = array_unique([$heading_font, $body_font]);
-    foreach ($fonts_to_load as $font_name) {
-        $font_id = 'modernnews-font-' . strtolower(str_replace(' ', '-', $font_name));
-        wp_enqueue_style($font_id, 'https://fonts.googleapis.com/css2?family=' . urlencode($font_name) . ':wght@400;500;700;800&display=swap', array(), null);
-    }
-    // Add logic for other fonts if selected, but for now we keep the premium default.
+    // Inline Custom Styles from Customizer (Live Preview) or Theme Options
+    $primary_color = modernnews_get_option('primary_color', '#168098');
+    $secondary_color = modernnews_get_option('secondary_color', '#6c757d');
+    $header_bg = modernnews_get_option('header_bg', '#ffffff');
+    $body_bg = modernnews_get_option('body_bg', '#f4f7f8');
+    $heading_font = modernnews_get_option('heading_font', 'Epilogue');
+    $body_font = modernnews_get_option('body_font', 'Noto Sans');
+    $border_radius = modernnews_get_option('border_radius', '0.4');
+    $site_width = modernnews_get_option('site_width', '1200');
 
     $custom_css = "
         :root {
@@ -183,8 +175,8 @@ function modernnews_scripts()
             --color-secondary: {$secondary_color};
             --bg-header: {$header_bg};
             --bg-light: {$body_bg};
-            --font-heading: '{$heading_font}', sans-serif;
-            --font-body: '{$body_font}', sans-serif;
+            --font-heading: '{$heading_font}', 'Inter', sans-serif;
+            --font-body: '{$body_font}', 'Lora', sans-serif;
             --radius-md: {$border_radius}rem;
             --site-max-width: {$site_width}px;
         }

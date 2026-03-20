@@ -1,0 +1,15 @@
+{
+  "name": "modernnews-theme",
+  "version": "1.3.0",
+  "description": "Modern News WordPress Theme",
+  "main": "index.php",
+  "scripts": {
+    "build": "tailwindcss -i ./assets/css/input.css -o ./assets/css/main.css --minify",
+    "watch": "tailwindcss -i ./assets/css/input.css -o ./assets/css/main.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/container-queries": "^0.1.1"
+  }
+}
