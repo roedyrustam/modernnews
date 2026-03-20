@@ -173,10 +173,6 @@
         <div
             class="header-container container max-w-[1280px] mx-auto px-4 lg:px-10 <?php echo (modernnews_get_option('mobile_compact_mode', true)) ? 'h-14' : 'h-20'; ?> lg:h-20 flex items-center justify-between xl:justify-between gap-6">
 
-            <!-- Mobile Menu Toggle (Left on Mobile) -->
-            <button id="mobile-menu-toggle" class="xl:hidden text-gray-700 dark:text-gray-200 p-2 -ml-2 relative z-20">
-                <span class="material-symbols-outlined text-2xl lg:text-3xl">menu</span>
-            </button>
 
             <a class="site-branding flex items-center gap-3 absolute left-1/2 -translate-x-1/2 xl:relative xl:left-0 xl:translate-x-0"
                 href="<?php echo esc_url(home_url('/')); ?>">
@@ -280,6 +276,11 @@
                         class="hidden md:flex bg-primary text-white text-xs font-bold uppercase tracking-widest px-6 py-2.5 rounded-lg hover:brightness-110 transition-all">Langganan</button>
                 <?php endif; ?>
             </div>
+
+            <!-- Mobile Menu Toggle (Right on Mobile) -->
+            <button id="mobile-menu-toggle" class="xl:hidden text-gray-700 dark:text-gray-200 p-2 -mr-2 relative z-20">
+                <span class="material-symbols-outlined text-2xl lg:text-3xl">menu</span>
+            </button>
         </div>
     </header>
 
